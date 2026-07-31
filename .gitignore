@@ -1,0 +1,40 @@
+# See https://github.com for more about ignoring files.
+
+# Dependencies
+/apps/web/node_modules
+/node_modules
+/docs
+/infrastructure
+/packages
+/.pnp
+.pnp.js
+
+# pnpm specific store and lock artifacts
+.pnpm-store/
+pnpm-debug.log*
+
+# Next.js build output
+/.next/
+/out/
+/build
+
+# Vercel deployment artifacts
+/.vercel
+
+# Testing and coverage
+/coverage
+/.nyc_output
+
+# Local environment files (Contains sensitive API keys)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Operating System files
+.DS_Store
+Thumbs.db
