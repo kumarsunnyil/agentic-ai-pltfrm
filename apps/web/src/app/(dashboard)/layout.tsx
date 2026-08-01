@@ -1,15 +1,9 @@
-import AppLayout from "@/components/layout/AppLayout";
-
-interface Props {
-    children: React.ReactNode;
-}
+import { AppLayout } from "@/components/layout";
 
 export default function DashboardLayout({
     children,
-}: Props) {
-    return (
-        <AppLayout>
-            {children}
-        </AppLayout>
-    );
+}: {
+    children: React.ReactNode;
+}) {
+    return <AppLayout>{children}</AppLayout>;
 }

@@ -1,34 +1,35 @@
 "use client";
 
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
+
+import AppSidebar from "./AppSidebar";
 
 interface AppLayoutProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export default function AppLayout({
-    children,
+  children,
 }: AppLayoutProps) {
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                minHeight: "100vh",
-                bgcolor: "background.default",
-            }}
-        >
-            {/* Sidebar */}
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        bgcolor: "background.default",
+      }}
+    >
+      <AppSidebar />
 
-            {/* Header */}
-
-            <Box
-                component="main"
-                sx={{
-                    flex: 1,
-                }}
-            >
-                {children}
-            </Box>
-        </Box>
-    );
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          overflow: "auto",
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
 }

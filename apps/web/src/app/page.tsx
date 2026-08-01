@@ -5,13 +5,16 @@ import {
   Typography,
 } from "@mui/material";
 
+
 export default function Home() {
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
     >
       <Paper
         sx={{
@@ -26,7 +29,11 @@ export default function Home() {
           Agentic AI Platform
         </Typography>
 
-        <Typography mb={3}>
+        <Typography
+          sx={{
+            mb: 3,
+          }}
+        >
           Next.js 16 + Material UI 9
         </Typography>
 

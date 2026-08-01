@@ -1,0 +1,1 @@
+Introduced 08-coding-standards.md file to maintain the coding standards in the MUI Designs. 
