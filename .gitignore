@@ -3,9 +3,9 @@
 # Dependencies
 /apps/web/node_modules
 /node_modules
-/docs
-/infrastructure
-/packages
+#/docs
+#/infrastructure
+#packages
 /.pnp
 .pnp.js
 
