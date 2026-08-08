@@ -1,7 +1,7 @@
 /**
  * ------------------------------------------------------------
  * @file: src/features/dashboard/Dashboard.tsx
- * @description: Enterprise AI Platform Command Center dashboard.
+ * @description: Responsive Enterprise AI Platform Command Center.
  * @author: Sunil.S.Kumar
  * @date: 08-08-2026
  * @project: Enterprise Agentic AI Platform
@@ -10,7 +10,10 @@
 
 "use client";
 
-import { Grid, Stack } from "@mui/material";
+import {
+  Grid,
+  Stack,
+} from "@mui/material";
 
 import AgentHealth from "./components/AgentHealth";
 import ActivityTimeline from "./components/ActivityTimeline";
@@ -26,28 +29,26 @@ import WorkflowStatus from "./components/WorkflowStatus";
 export default function Dashboard() {
   return (
     <Stack
-      spacing={3}
+      spacing={{
+        xs: 2,
+        sm: 2.5,
+        md: 3,
+      }}
       sx={{
         width: "100%",
+        minWidth: 0,
       }}
     >
-      {/* Dashboard Header */}
-
       <DashboardHeader />
-
-      {/* Enterprise Command Center */}
-
       <WelcomeBanner />
-
-      {/* Primary KPIs */}
-
       <KpiGrid />
-
-      {/* AI Operations */}
-
       <Grid
         container
-        spacing={3}
+        spacing={{
+          xs: 2,
+          sm: 2.5,
+          md: 3,
+        }}
       >
         <Grid
           size={{
@@ -67,17 +68,18 @@ export default function Dashboard() {
           <AgentHealth />
         </Grid>
       </Grid>
-
-      {/* Knowledge & Conversations */}
-
       <Grid
         container
-        spacing={3}
+        spacing={{
+          xs: 2,
+          sm: 2.5,
+          md: 3,
+        }}
       >
         <Grid
           size={{
             xs: 12,
-            lg: 6,
+            md: 6,
           }}
         >
           <RecentDocuments />
@@ -86,23 +88,24 @@ export default function Dashboard() {
         <Grid
           size={{
             xs: 12,
-            lg: 6,
+            md: 6,
           }}
         >
           <RecentConversations />
         </Grid>
       </Grid>
-
-      {/* Workflow & Platform Alerts */}
-
       <Grid
         container
-        spacing={3}
+        spacing={{
+          xs: 2,
+          sm: 2.5,
+          md: 3,
+        }}
       >
         <Grid
           size={{
             xs: 12,
-            lg: 7,
+            md: 7,
           }}
         >
           <WorkflowStatus />
@@ -111,15 +114,12 @@ export default function Dashboard() {
         <Grid
           size={{
             xs: 12,
-            lg: 5,
+            md: 5,
           }}
         >
           <SystemAlerts />
         </Grid>
       </Grid>
-
-      {/* Platform Activity */}
-
       <ActivityTimeline />
     </Stack>
   );

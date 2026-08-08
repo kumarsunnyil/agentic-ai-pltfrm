@@ -1,234 +1,292 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src/features/dashboard/components/WelcomeBanner.tsx
+ * @description: Responsive Enterprise Dashboard welcome banner.
+ * @author: Sunil.S.Kumar
+ * @date: 08-08-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 "use client";
 
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
-import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
-import SmartToyRoundedIcon from "@mui/icons-material/SmartToyRounded";
-import TimelineRoundedIcon from "@mui/icons-material/TimelineRounded";
 
 import {
   Box,
   Button,
-  Chip,
-  Paper,
   Stack,
   Typography,
 } from "@mui/material";
 
 export default function WelcomeBanner() {
   return (
-    <Paper
-      elevation={0}
+    <Box
       sx={{
-        borderRadius: 6,
+        position: "relative",
         overflow: "hidden",
+
+        p: {
+          xs: 2.5,
+          sm: 3,
+          md: 4,
+        },
+
+        minHeight: {
+          xs: 220,
+          sm: 230,
+          md: 250,
+        },
+
+        display: "flex",
+        alignItems: "center",
+
+        borderRadius: {
+          xs: 3,
+          md: 4,
+        },
+
         background:
-          "linear-gradient(135deg,#4F8EF7 0%, #3B82F6 100%)",
-        color: "#fff",
+          "linear-gradient(135deg, #2563eb 0%, #4f46e5 55%, #7c3aed 100%)",
+
+        color: "common.white",
       }}
     >
+      {/* ---------------------------------------------------
+          Decorative Circle
+          --------------------------------------------------- */}
+
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            md: "2fr 1fr",
+          position: "absolute",
+
+          width: {
+            xs: 140,
+            md: 220,
           },
-          gap: 4,
-          alignItems: "center",
-          p: 4,
-          minHeight: 220,
+
+          height: {
+            xs: 140,
+            md: 220,
+          },
+
+          borderRadius: "50%",
+
+          right: {
+            xs: -50,
+            md: -30,
+          },
+
+          top: {
+            xs: -40,
+            md: -70,
+          },
+
+          background:
+            "radial-gradient(circle, #ffffff22, #ffffff05)",
+
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* ---------------------------------------------------
+          Banner Content
+          --------------------------------------------------- */}
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: 900,
         }}
       >
-        {/* LEFT CONTENT */}
+        <Stack
+          direction="row"
+          spacing={{
+            xs: 2,
+            sm: 3,
+          }}
+          sx={{
+            width: "100%",
 
-        <Box>
-          <Chip
-            icon={<AutoAwesomeRoundedIcon />}
-            label="Enterprise AI Platform"
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+            },
+
+            alignItems: {
+              xs: "flex-start",
+              sm: "center",
+            },
+          }}
+        >
+          {/* -------------------------------------------------
+              Icon
+              ------------------------------------------------- */}
+
+          <Box
             sx={{
-              mb: 2,
-              bgcolor: "rgba(255,255,255,.15)",
-              color: "#fff",
-
-              "& .MuiChip-icon": {
-                color: "#fff",
+              width: {
+                xs: 48,
+                sm: 56,
               },
-            }}
-          />
 
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 700,
-              mb: 2,
+              height: {
+                xs: 48,
+                sm: 56,
+              },
+
+              borderRadius: 3,
+
+              display: "flex",
+
+              alignItems: "center",
+
+              justifyContent: "center",
+
+              flexShrink: 0,
+
+              backgroundColor:
+                "rgba(255,255,255,0.15)",
             }}
           >
-            Enterprise Command Center
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: 18,
-              lineHeight: 1.8,
-              opacity: 0.95,
-              maxWidth: 1500,
-            }}
-          >
-            Monitor AI agents, enterprise knowledge,
-            intelligent workflows, document processing,
-            analytics, and real-time platform health from a
-            single command center.
-          </Typography>
-
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              mt: 4,
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
-              variant="contained"
-              startIcon={<CloudUploadRoundedIcon />}
+            <AutoAwesomeRoundedIcon
               sx={{
-                bgcolor: "#8B5CF6",
+                fontSize: {
+                  xs: 28,
+                  sm: 34,
+                },
+              }}
+            />
+          </Box>
 
-                "&:hover": {
-                  bgcolor: "#7C3AED",
+          {/* -------------------------------------------------
+              Text Content
+              ------------------------------------------------- */}
+
+          <Box
+            sx={{
+              minWidth: 0,
+              flex: 1,
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+
+                fontSize: {
+                  xs: 24,
+                  sm: 30,
+                  md: 34,
+                },
+
+                lineHeight: 1.2,
+              }}
+            >
+              Enterprise Command Center
+            </Typography>
+
+            <Typography
+              sx={{
+                mt: 1,
+
+                color:
+                  "rgba(255,255,255,0.82)",
+
+                fontSize: {
+                  xs: 13,
+                  sm: 14,
+                  md: 15,
+                },
+
+                lineHeight: 1.6,
+
+                maxWidth: 700,
+              }}
+            >
+              Monitor your AI agents, enterprise
+              knowledge, workflows, and platform
+              activity from one place.
+            </Typography>
+
+            {/* ---------------------------------------------
+                Action Buttons
+                --------------------------------------------- */}
+
+            <Stack
+              direction="row"
+              spacing={1.5}
+              sx={{
+                mt: 2.5,
+
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+
+                width: {
+                  xs: "100%",
+                  sm: "auto",
+                },
+
+                "& .MuiButton-root": {
+                  width: {
+                    xs: "100%",
+                    sm: "auto",
+                  },
                 },
               }}
             >
-              Upload Document
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  minHeight: 42,
 
-            <Button
-              variant="outlined"
-              startIcon={<SmartToyRoundedIcon />}
-              color="inherit"
-            >
-              AI Chat
-            </Button>
+                  px: 2.5,
 
-            <Button
-              variant="outlined"
-              startIcon={<TimelineRoundedIcon />}
-              color="inherit"
-            >
-              Workflow Studio
-            </Button>
-          </Stack>
-        </Box>
+                  backgroundColor:
+                    "common.white",
 
-        {/* RIGHT PANEL */}
+                  color: "primary.main",
 
-        <Paper
-          elevation={0}
-          sx={{
-            bgcolor: "rgba(255,255,255,.12)",
-            backdropFilter: "blur(20px)",
-            borderRadius: 5,
-            p: 3,
-            border: "1px solid rgba(255,255,255,.15)",
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              mb: 3,
-              color: "#fff",
-              fontWeight: 700,
-            }}
-          >
-            AI Platform Status
-          </Typography>
+                  "&:hover": {
+                    backgroundColor:
+                      "grey.100",
+                  },
+                }}
+              >
+                Open AI Workspace
+              </Button>
 
-          <Stack spacing={2}>
-            <StatusRow
-              label="AI Agents"
-              value="24"
-              color="#22C55E"
-            />
+              <Button
+                variant="outlined"
+                sx={{
+                  minHeight: 42,
 
-            <StatusRow
-              label="Documents"
-              value="1,248"
-              color="#22C55E"
-            />
+                  px: 2.5,
 
-            <StatusRow
-              label="Models"
-              value="3"
-              color="#22C55E"
-            />
+                  color: "common.white",
 
-            <StatusRow
-              label="Workflows"
-              value="16"
-              color="#22C55E"
-            />
-          </Stack>
-        </Paper>
+                  borderColor:
+                    "rgba(255,255,255,0.45)",
+
+                  "&:hover": {
+                    borderColor:
+                      "common.white",
+
+                    backgroundColor:
+                      "rgba(255,255,255,0.08)",
+                  },
+                }}
+              >
+                Explore Knowledge
+              </Button>
+            </Stack>
+          </Box>
+        </Stack>
       </Box>
-    </Paper>
-  );
-}
-
-interface StatusRowProps {
-  label: string;
-  value: string;
-  color: string;
-}
-
-function StatusRow({
-  label,
-  value,
-  color,
-}: StatusRowProps) {
-  return (
-    <Stack
-      sx={{
-        direction: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-
-      }}
-    >
-      <Typography
-        sx={{
-          color: "#fff",
-        }}
-      >
-        {label}
-      </Typography>
-
-      <Stack
-        sx={{
-
-          direction: "row",
-        wordSpacing: 1,
-          alignItems: "center"
-          
-        }}
-      >
-        <Box
-          sx={{
-            width: 10,
-            height: 10,
-            borderRadius: "50%",
-            bgcolor: color,
-          }}
-        />
-
-        <Typography
-          sx={{
-            color: "#fff",
-            fontWeight:700,
-          }}
-        >
-          {value}
-        </Typography>
-      </Stack>
-    </Stack>
+    </Box>
   );
 }

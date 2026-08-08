@@ -33,14 +33,14 @@ export default function UserMenu() {
                         fontWeight: 600
                     }}
                 >
-                    Sunil
+                    Sunil Kumar
                 </Typography>
 
                 <Typography
                     variant="caption"
                     color="text.secondary"
                 >
-                    Solution Architect
+                    Technical Architect
                 </Typography>
             </Box>
 
