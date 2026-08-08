@@ -2,7 +2,9 @@
 
 import { Box } from "@mui/material";
 
+import AppHeader from "./AppHeader";
 import AppSidebar from "./AppSidebar";
+import PageContainer from "./PageContainer";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -22,13 +24,16 @@ export default function AppLayout({
       <AppSidebar />
 
       <Box
-        component="main"
         sx={{
           flexGrow: 1,
-          overflow: "auto",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
         }}
       >
-        {children}
+        <AppHeader />
+
+        <PageContainer>{children}</PageContainer>
       </Box>
     </Box>
   );

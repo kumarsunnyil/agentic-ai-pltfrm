@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/layout";
+import { AppLayout } from "@/ui/layout";
 
 export default function DashboardLayout({
     children,

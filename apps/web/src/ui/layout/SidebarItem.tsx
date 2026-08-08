@@ -8,6 +8,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 
 import { NavigationItem } from "@/types/navigation";
@@ -32,8 +33,9 @@ export default function SidebarItem({
         href={item.href}
         selected={active}
         sx={{
+          minHeight: 54,
+          px: 2,
           borderRadius: 3,
-          minHeight: 48,
 
           transition: "all .2s",
 
@@ -59,13 +61,25 @@ export default function SidebarItem({
         <ListItemIcon
           sx={{
             color: active ? "primary.contrastText" : "text.secondary",
-            minWidth: 42,
+            minWidth: 22,
           }}
         >
           <Icon />
         </ListItemIcon>
 
-        <ListItemText primary={item.title} />
+        <ListItemText
+          disableTypography
+          primary={
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: active ? 600 : 500,
+              }}
+            >
+              {item.title}
+            </Typography>
+          }
+        />
       </ListItemButton>
     </ListItem>
   );

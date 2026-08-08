@@ -1,34 +1,22 @@
-import { Box, Typography } from "@mui/material";
+/**
+ * ------------------------------------------------------------
+ * @file: src\features\dashboard\components\DashboardHeader.tsx
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 07-08-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
+"use client";
+
+import SectionHeader from "@/ui/common/SectionHeader";
 
 export default function DashboardHeader() {
   return (
-    <Box>
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 700,
-        }}
-      >
-        Dashboard
-      </Typography>
-
-      <Typography
-        sx={{
-          mt: 1,
-          color: "text.secondary",
-        }}
-      >
-        Welcome back, Sunil 👋
-      </Typography>
-
-      <Typography
-        sx={{
-          mt: 0.5,
-          color: "text.secondary",
-        }}
-      >
-        Here's what's happening across your Enterprise AI Platform today.
-      </Typography>
-    </Box>
+    <SectionHeader
+      title="Dashboard"
+      subtitle="Welcome back, Sunil 👋  Here's what's happening across your Enterprise AI Platform today."
+    />
   );
 }

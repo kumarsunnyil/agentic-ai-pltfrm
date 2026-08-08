@@ -19,8 +19,8 @@ export default function AppSidebar() {
 
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
-          borderRight: "1px solid",
-          borderColor: "divider",
+          borderRight: "backdropFilter",
+          borderColor: "blur",
           boxSizing: "border-box",
           bgcolor: "background.paper",
         },
