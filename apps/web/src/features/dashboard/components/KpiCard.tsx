@@ -1,7 +1,7 @@
 /**
  * ------------------------------------------------------------
  * @file: src/features/dashboard/components/KpiCard.tsx
- * @description: Premium responsive Enterprise KPI card.
+ * @description: Responsive enterprise dashboard KPI card.
  * @author: Sunil.S.Kumar
  * @date: 08-08-2026
  * @project: Enterprise Agentic AI Platform
@@ -12,7 +12,11 @@
 
 import type { ElementType } from "react";
 
-import { Box, Paper, Typography } from "@mui/material";
+import {
+    Box,
+    Paper,
+    Typography,
+} from "@mui/material";
 
 interface KpiCardProps {
     title: string;
@@ -38,7 +42,7 @@ export default function KpiCard({
                 height: "100%",
 
                 minHeight: {
-                    xs: 130,
+                    xs: 135,
                     sm: 145,
                     md: 155,
                 },
@@ -55,35 +59,51 @@ export default function KpiCard({
                 },
 
                 border: "1px solid",
-                borderColor: "rgba(148,163,184,0.16)",
+                borderColor: "rgba(148, 163, 184, 0.16)",
 
                 background:
-                    "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96))",
+                    "linear-gradient(145deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.96))",
 
                 boxShadow:
-                    "0 8px 30px rgba(0,0,0,0.12)",
+                    "0 8px 30px rgba(0, 0, 0, 0.12)",
 
                 transition:
                     "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
 
                 "&::after": {
                     content: '""',
+
                     position: "absolute",
-                    width: 100,
-                    height: 100,
+
+                    width: {
+                        xs: 90,
+                        md: 110,
+                    },
+
+                    height: {
+                        xs: 90,
+                        md: 110,
+                    },
+
                     right: -45,
-                    bottom: -55,
+                    bottom: -50,
+
                     borderRadius: "50%",
+
                     background:
                         "radial-gradient(circle, rgba(59,130,246,0.16), transparent 70%)",
+
                     pointerEvents: "none",
                 },
 
                 "&:hover": {
                     transform: "translateY(-3px)",
-                    borderColor: "rgba(59,130,246,0.38)",
+
+                    borderColor:
+                        "rgba(59, 130, 246, 0.38)",
+
                     boxShadow:
-                        "0 14px 36px rgba(0,0,0,0.20)",
+                        "0 14px 36px rgba(0, 0, 0, 0.20)",
                 },
             }}
         >
@@ -93,15 +113,24 @@ export default function KpiCard({
                     zIndex: 1,
 
                     display: "flex",
+
                     alignItems: "flex-start",
+
                     justifyContent: "space-between",
+
                     gap: 2,
+
+                    height: "100%",
                 }}
             >
                 <Box
                     sx={{
                         minWidth: 0,
                         flex: 1,
+
+                        display: "flex",
+
+                        flexDirection: "column",
                     }}
                 >
                     <Typography
@@ -113,7 +142,9 @@ export default function KpiCard({
                                 xs: 12,
                                 sm: 13,
                             },
+
                             fontWeight: 500,
+
                             letterSpacing: 0.2,
                         }}
                     >
@@ -149,7 +180,9 @@ export default function KpiCard({
                             noWrap
                             sx={{
                                 display: "block",
+
                                 mt: 1,
+
                                 opacity: 0.85,
                             }}
                         >
@@ -157,7 +190,6 @@ export default function KpiCard({
                         </Typography>
                     )}
                 </Box>
-
                 {Icon && (
                     <Box
                         sx={{
@@ -174,7 +206,9 @@ export default function KpiCard({
                             borderRadius: 2.5,
 
                             display: "flex",
+
                             alignItems: "center",
+
                             justifyContent: "center",
 
                             flexShrink: 0,

@@ -1,7 +1,7 @@
 /**
  * ------------------------------------------------------------
  * @file: src/features/dashboard/components/KpiGrid.tsx
- * @description: Responsive Enterprise Dashboard KPI grid.
+ * @description: Responsive enterprise dashboard KPI grid.
  * @author: Sunil.S.Kumar
  * @date: 08-08-2026
  * @project: Enterprise Agentic AI Platform
@@ -36,6 +36,10 @@ export default function KpiGrid() {
             xs: 12,
             sm: 6,
             lg: 3,
+          }}
+          sx={{
+            display: "flex",
+            minWidth: 0,
           }}
         >
           <KpiCard
