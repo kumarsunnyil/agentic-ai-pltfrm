@@ -39,8 +39,8 @@ export default function AppLayout({
     <Box
       sx={{
         display: "flex",
-        minHeight: "100vh",
         width: "100%",
+        minHeight: "100vh",
         backgroundColor: "background.default",
         overflow: "hidden",
       }}
@@ -50,7 +50,6 @@ export default function AppLayout({
         mobileOpen={mobileSidebarOpen}
         onMobileClose={handleMobileSidebarClose}
       />
-
 
       <Box
         component="main"
@@ -63,7 +62,7 @@ export default function AppLayout({
           overflow: "hidden",
         }}
       >
-        {/* Application Header */}
+        {/* Header */}
 
         <AppHeader
           onMenuClick={handleMobileSidebarOpen}
@@ -71,9 +70,18 @@ export default function AppLayout({
 
         {/* Page Content */}
 
-        <PageContainer>
-          {children}
-        </PageContainer>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+          }}
+        >
+          <PageContainer>
+            {children}
+          </PageContainer>
+        </Box>
       </Box>
     </Box>
   );

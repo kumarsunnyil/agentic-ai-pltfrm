@@ -1,24 +1,60 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src/ui/layout/PageContainer.tsx
+ * @description: Responsive Enterprise Application page container.
+ * @author: Sunil.S.Kumar
+ * @date: 08-08-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 "use client";
 
 import { Box } from "@mui/material";
 
-import { CONTENT_PADDING } from "@/theme/constants";
+import {
+    HEADER_HEIGHT,
+} from "@/theme/constants";
 
 interface PageContainerProps {
     children: React.ReactNode;
 }
+
 export default function PageContainer({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+}: PageContainerProps) {
     return (
         <Box
-            component="main"
             sx={{
-                flex: 1,
-                p: 4,
-                overflowY: "auto",
+                width: "100%",
+                minWidth: 0,
+
+                boxSizing: "border-box",
+
+                px: {
+                    xs: 2,
+                    sm: 2.5,
+                    md: 3,
+                    lg: 4,
+                },
+
+                py: {
+                    xs: 2,
+                    sm: 2.5,
+                    md: 3,
+                    lg: 4,
+                },
+
+                pb: {
+                    xs: 4,
+                    md: 5,
+                },
+
+                maxWidth: 1600,
+
+                mx: "auto",
+
+                minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
             }}
         >
             {children}
