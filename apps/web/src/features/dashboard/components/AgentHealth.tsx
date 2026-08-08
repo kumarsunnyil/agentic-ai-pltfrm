@@ -85,9 +85,9 @@ export default function AgentHealth() {
             <Typography
 
 
+                variant="h6"
                 sx={{
 
-                    variant: "h6",
                     fontWeight: 700,
                     mb: 3,
                 }}

@@ -40,12 +40,12 @@ export default function AiUsageChart() {
             }}
         >
             <Typography
-            sx = {{
+                variant="h6"
+                sx={{
 
-                variant:"h6",
-                fontWeight:700,
-                mb:3,
-            }}
+                    fontWeight: 700,
+                    mb: 3,
+                }}
             >
                 AI Usage Analytics
             </Typography>

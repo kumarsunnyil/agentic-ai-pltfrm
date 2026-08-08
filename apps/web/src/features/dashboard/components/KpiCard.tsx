@@ -46,9 +46,9 @@ export default function KpiCard({
 
                 <Typography
 
+                    variant="h4"
                     sx={{
 
-                        variant: "h4",
                         fontWeight: 700
                     }}
                 >

@@ -29,8 +29,8 @@ export default function SectionHeader({
             }}
         >
             <Typography
+                variant="h5"
                 sx={{
-                    variant: "h5",
                     fontWeight: 700
                 }}
             >
