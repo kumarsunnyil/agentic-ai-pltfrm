@@ -33,7 +33,7 @@ export default function UserMenu() {
                         fontWeight: 600
                     }}
                 >
-                    Sunil Kumar
+                    Shayne Thomas Mavely
                 </Typography>
 
                 <Typography

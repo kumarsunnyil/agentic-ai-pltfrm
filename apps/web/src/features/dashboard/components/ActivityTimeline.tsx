@@ -1,22 +1,18 @@
 /**
  * ------------------------------------------------------------
- * @file: src\features\dashboard\components\ActivityTimeline.tsx
- * @description: Reusable Enterprise dashboard Activity Timeline widget.
+ * @file: src/features/dashboard/components/ActivityTimeline.tsx
+ * @description: Responsive enterprise platform activity timeline.
  * @author: Sunil.S.Kumar
- * @date: 07-08-2026
+ * @date: 08-08-2026
  * @project: Enterprise Agentic AI Platform
  * ------------------------------------------------------------
  */
 
 "use client";
 
-import {
-    AutoAwesomeOutlined,
-    CheckCircleOutlined,
-    DescriptionOutlined,
-    ErrorOutlined,
-    PlayCircleOutlined,
-} from "@mui/icons-material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 
 import {
     Box,
@@ -25,81 +21,45 @@ import {
     Typography,
 } from "@mui/material";
 
-type ActivityType =
-    | "agent"
-    | "document"
-    | "workflow"
-    | "success"
-    | "error";
-
 interface Activity {
     id: string;
-    type: ActivityType;
     title: string;
     description: string;
     time: string;
+    type: "agent" | "document" | "workflow";
 }
 
 const activities: Activity[] = [
     {
         id: "activity-001",
-        type: "agent",
-        title: "AI Agent executed",
+        title: "AI Agent completed execution",
         description:
-            "Document Classification Agent processed 42 documents.",
-        time: "5 min ago",
+            "Document Classification Agent processed 128 documents.",
+        time: "8 min ago",
+        type: "agent",
     },
     {
         id: "activity-002",
-        type: "document",
-        title: "Document uploaded",
+        title: "Knowledge document indexed",
         description:
-            "Enterprise Architecture Guidelines.pdf was added to Knowledge Hub.",
-        time: "12 min ago",
+            "Enterprise AI Architecture was added to the knowledge base.",
+        time: "21 min ago",
+        type: "document",
     },
     {
         id: "activity-003",
+        title: "Workflow completed",
+        description:
+            "Knowledge Indexing workflow completed successfully.",
+        time: "38 min ago",
         type: "workflow",
-        title: "Workflow started",
-        description:
-            "Knowledge Synchronization workflow started successfully.",
-        time: "18 min ago",
-    },
-    {
-        id: "activity-004",
-        type: "success",
-        title: "Knowledge index updated",
-        description:
-            "1,248 documents are now available for enterprise retrieval.",
-        time: "32 min ago",
-    },
-    {
-        id: "activity-005",
-        type: "error",
-        title: "Agent execution failed",
-        description:
-            "Document Classification Agent encountered a timeout.",
-        time: "48 min ago",
     },
 ];
 
-const activityIcons: Record<
-    ActivityType,
-    React.ReactNode
-> = {
-    agent: <AutoAwesomeOutlined />,
-    document: <DescriptionOutlined />,
-    workflow: <PlayCircleOutlined />,
-    success: <CheckCircleOutlined />,
-    error: <ErrorOutlined />,
-};
-
-const activityColors: Record<ActivityType, string> = {
-    agent: "primary.main",
-    document: "info.main",
-    workflow: "warning.main",
-    success: "success.main",
-    error: "error.main",
+const activityIcons = {
+    agent: SmartToyOutlinedIcon,
+    document: DescriptionOutlinedIcon,
+    workflow: CheckCircleOutlineIcon,
 };
 
 export default function ActivityTimeline() {
@@ -107,25 +67,48 @@ export default function ActivityTimeline() {
         <Paper
             elevation={0}
             sx={{
-                p: 3,
-                borderRadius: 4,
+                width: "100%",
+
+                p: {
+                    xs: 2,
+                    sm: 2.5,
+                    md: 3,
+                },
+
+                borderRadius: {
+                    xs: 2.5,
+                    md: 4,
+                },
+
                 border: "1px solid",
                 borderColor: "divider",
+
                 backgroundColor: "background.paper",
             }}
         >
+            {/* Header */}
+
             <Box
                 sx={{
-                    mb: 3,
+                    mb: {
+                        xs: 2,
+                        md: 3,
+                    },
                 }}
             >
                 <Typography
                     variant="h6"
                     sx={{
                         fontWeight: 700,
+
+                        fontSize: {
+                            xs: 16,
+                            sm: 17,
+                            md: 18,
+                        },
                     }}
                 >
-                    Activity Timeline
+                    Recent Activity
                 </Typography>
 
                 <Typography
@@ -135,109 +118,125 @@ export default function ActivityTimeline() {
                         mt: 0.5,
                     }}
                 >
-                    Recent activity across the Enterprise AI Platform
+                    Latest platform events
                 </Typography>
             </Box>
 
-            <Stack spacing={0}>
-                {activities.map((activity, index) => (
-                    <Box
-                        key={activity.id}
-                        sx={{
-                            display: "flex",
-                            gap: 2,
-                            position: "relative",
-                            pb: index === activities.length - 1 ? 0 : 3,
-                        }}
-                    >
-                        {/* Timeline Line */}
+            {/* Timeline */}
 
-                        {index !== activities.length - 1 && (
-                            <Box
-                                sx={{
-                                    position: "absolute",
-                                    left: 19,
-                                    top: 40,
-                                    bottom: 0,
-                                    width: 1,
-                                    backgroundColor: "divider",
-                                }}
-                            />
-                        )}
+            <Stack
+                spacing={{
+                    xs: 2,
+                    md: 2.5,
+                }}
+            >
+                {activities.map((activity) => {
+                    const ActivityIcon =
+                        activityIcons[activity.type];
 
-                        {/* Timeline Icon */}
-
+                    return (
                         <Box
+                            key={activity.id}
                             sx={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: "50%",
                                 display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                flexShrink: 0,
-                                backgroundColor: "action.hover",
-                                color: activityColors[activity.type],
-                                zIndex: 1,
-                            }}
-                        >
-                            {activityIcons[activity.type]}
-                        </Box>
 
-                        {/* Timeline Content */}
+                                alignItems: "flex-start",
 
-                        <Box
-                            sx={{
+                                gap: {
+                                    xs: 1.5,
+                                    sm: 2,
+                                },
+
                                 minWidth: 0,
-                                flex: 1,
-                                pt: 0.25,
                             }}
                         >
+                            {/* Icon */}
+
                             <Box
                                 sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: {
-                                        xs: "flex-start",
-                                        sm: "center",
+                                    width: {
+                                        xs: 36,
+                                        sm: 42,
                                     },
-                                    gap: 2,
+
+                                    height: {
+                                        xs: 36,
+                                        sm: 42,
+                                    },
+
+                                    borderRadius: "50%",
+
+                                    display: "flex",
+
+                                    alignItems: "center",
+
+                                    justifyContent: "center",
+
+                                    flexShrink: 0,
+
+                                    backgroundColor: "action.hover",
+
+                                    color: "primary.main",
+                                }}
+                            >
+                                <ActivityIcon
+                                    sx={{
+                                        fontSize: {
+                                            xs: 18,
+                                            sm: 21,
+                                        },
+                                    }}
+                                />
+                            </Box>
+
+                            {/* Content */}
+
+                            <Box
+                                sx={{
+                                    minWidth: 0,
+                                    flex: 1,
                                 }}
                             >
                                 <Typography
                                     variant="body2"
                                     sx={{
-                                        fontWeight: 700,
+                                        fontWeight: 600,
                                     }}
                                 >
                                     {activity.title}
                                 </Typography>
 
                                 <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        mt: 0.5,
+
+                                        fontSize: {
+                                            xs: 12,
+                                            sm: 13,
+                                        },
+
+                                        lineHeight: 1.5,
+                                    }}
+                                >
+                                    {activity.description}
+                                </Typography>
+
+                                <Typography
                                     variant="caption"
                                     color="text.secondary"
                                     sx={{
-                                        flexShrink: 0,
-                                        whiteSpace: "nowrap",
+                                        display: "block",
+                                        mt: 0.5,
                                     }}
                                 >
                                     {activity.time}
                                 </Typography>
                             </Box>
-
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                sx={{
-                                    mt: 0.5,
-                                    lineHeight: 1.6,
-                                }}
-                            >
-                                {activity.description}
-                            </Typography>
                         </Box>
-                    </Box>
-                ))}
+                    );
+                })}
             </Stack>
         </Paper>
     );
