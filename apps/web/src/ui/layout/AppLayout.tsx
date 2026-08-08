@@ -1,6 +1,17 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src/ui/layout/AppLayout.tsx
+ * @description: Responsive Enterprise Application Layout.
+ * @author: Sunil.S.Kumar
+ * @date: 08-08-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 "use client";
 
 import { Box } from "@mui/material";
+import { useState } from "react";
 
 import AppHeader from "./AppHeader";
 import AppSidebar from "./AppSidebar";
@@ -13,27 +24,56 @@ interface AppLayoutProps {
 export default function AppLayout({
   children,
 }: AppLayoutProps) {
+  const [mobileSidebarOpen, setMobileSidebarOpen] =
+    useState(false);
+
+  const handleMobileSidebarOpen = () => {
+    setMobileSidebarOpen(true);
+  };
+
+  const handleMobileSidebarClose = () => {
+    setMobileSidebarOpen(false);
+  };
+
   return (
     <Box
       sx={{
         display: "flex",
         minHeight: "100vh",
-        bgcolor: "background.default",
+        width: "100%",
+        backgroundColor: "background.default",
+        overflow: "hidden",
       }}
     >
-      <AppSidebar />
+
+      <AppSidebar
+        mobileOpen={mobileSidebarOpen}
+        onMobileClose={handleMobileSidebarClose}
+      />
+
 
       <Box
+        component="main"
         sx={{
-          flexGrow: 1,
           display: "flex",
           flexDirection: "column",
+          flex: 1,
+          minWidth: 0,
+          minHeight: "100vh",
           overflow: "hidden",
         }}
       >
-        <AppHeader />
+        {/* Application Header */}
 
-        <PageContainer>{children}</PageContainer>
+        <AppHeader
+          onMenuClick={handleMobileSidebarOpen}
+        />
+
+        {/* Page Content */}
+
+        <PageContainer>
+          {children}
+        </PageContainer>
       </Box>
     </Box>
   );
