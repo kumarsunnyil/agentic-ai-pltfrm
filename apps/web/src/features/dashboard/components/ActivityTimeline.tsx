@@ -81,9 +81,28 @@ export default function ActivityTimeline() {
                 },
 
                 border: "1px solid",
-                borderColor: "divider",
 
-                backgroundColor: "background.paper",
+                borderColor:
+                    "rgba(148,163,184,0.15)",
+
+                background:
+                    "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96))",
+
+                boxShadow:
+                    "0 8px 28px rgba(0,0,0,0.10)",
+
+                transition:
+                    "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+
+                "&:hover": {
+                    transform: "translateY(-2px)",
+
+                    borderColor:
+                        "rgba(59,130,246,0.28)",
+
+                    boxShadow:
+                        "0 12px 32px rgba(0,0,0,0.16)",
+                },
             }}
         >
             <Box
@@ -114,6 +133,11 @@ export default function ActivityTimeline() {
                     color="text.secondary"
                     sx={{
                         mt: 0.5,
+
+                        fontSize: {
+                            xs: 12,
+                            sm: 13,
+                        },
                     }}
                 >
                     Latest platform events
@@ -125,14 +149,19 @@ export default function ActivityTimeline() {
                     md: 2.5,
                 }}
             >
-                {activities.map((activity) => {
+                {activities.map((activity, index) => {
                     const ActivityIcon =
                         activityIcons[activity.type];
+
+                    const isLast =
+                        index === activities.length - 1;
 
                     return (
                         <Box
                             key={activity.id}
                             sx={{
+                                position: "relative",
+
                                 display: "flex",
 
                                 alignItems: "flex-start",
@@ -145,8 +174,39 @@ export default function ActivityTimeline() {
                                 minWidth: 0,
                             }}
                         >
+                            {!isLast && (
+                                <Box
+                                    sx={{
+                                        position: "absolute",
+
+                                        left: {
+                                            xs: 17,
+                                            sm: 20,
+                                        },
+
+                                        top: {
+                                            xs: 36,
+                                            sm: 42,
+                                        },
+
+                                        bottom: {
+                                            xs: -24,
+                                            md: -28,
+                                        },
+
+                                        width: 1,
+
+                                        backgroundColor:
+                                            "rgba(148,163,184,0.16)",
+                                    }}
+                                />
+                            )}
                             <Box
                                 sx={{
+                                    position: "relative",
+
+                                    zIndex: 1,
+
                                     width: {
                                         xs: 36,
                                         sm: 42,
@@ -167,9 +227,16 @@ export default function ActivityTimeline() {
 
                                     flexShrink: 0,
 
-                                    backgroundColor: "action.hover",
+                                    color: "primary.light",
 
-                                    color: "primary.main",
+                                    background:
+                                        "rgba(59,130,246,0.10)",
+
+                                    border:
+                                        "1px solid rgba(59,130,246,0.18)",
+
+                                    boxShadow:
+                                        "0 0 0 4px rgba(15,23,42,0.85)",
                                 }}
                             >
                                 <ActivityIcon
@@ -184,17 +251,65 @@ export default function ActivityTimeline() {
                             <Box
                                 sx={{
                                     minWidth: 0,
+
                                     flex: 1,
+
+                                    pb: isLast ? 0 : 0.25,
                                 }}
                             >
-                                <Typography
-                                    variant="body2"
+                                <Box
                                     sx={{
-                                        fontWeight: 600,
+                                        display: "flex",
+
+                                        flexDirection: {
+                                            xs: "column",
+                                            sm: "row",
+                                        },
+
+                                        alignItems: {
+                                            xs: "flex-start",
+                                            sm: "center",
+                                        },
+
+                                        justifyContent:
+                                            "space-between",
+
+                                        gap: {
+                                            xs: 0.25,
+                                            sm: 2,
+                                        },
                                     }}
                                 >
-                                    {activity.title}
-                                </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{
+                                            fontWeight: 600,
+
+                                            fontSize: {
+                                                xs: 12,
+                                                sm: 13,
+                                                md: 14,
+                                            },
+                                        }}
+                                    >
+                                        {activity.title}
+                                    </Typography>
+
+                                    <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        sx={{
+                                            flexShrink: 0,
+
+                                            fontSize: {
+                                                xs: 10,
+                                                sm: 11,
+                                            },
+                                        }}
+                                    >
+                                        {activity.time}
+                                    </Typography>
+                                </Box>
 
                                 <Typography
                                     variant="body2"
@@ -208,20 +323,11 @@ export default function ActivityTimeline() {
                                         },
 
                                         lineHeight: 1.5,
+
+                                        maxWidth: 900,
                                     }}
                                 >
                                     {activity.description}
-                                </Typography>
-
-                                <Typography
-                                    variant="caption"
-                                    color="text.secondary"
-                                    sx={{
-                                        display: "block",
-                                        mt: 0.5,
-                                    }}
-                                >
-                                    {activity.time}
                                 </Typography>
                             </Box>
                         </Box>

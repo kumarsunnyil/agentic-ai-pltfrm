@@ -71,6 +71,7 @@ export default function SystemAlerts() {
       elevation={0}
       sx={{
         width: "100%",
+
         height: "100%",
 
         minHeight: {
@@ -91,9 +92,28 @@ export default function SystemAlerts() {
         },
 
         border: "1px solid",
-        borderColor: "divider",
 
-        backgroundColor: "background.paper",
+        borderColor:
+          "rgba(148,163,184,0.15)",
+
+        background:
+          "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96))",
+
+        boxShadow:
+          "0 8px 28px rgba(0,0,0,0.10)",
+
+        transition:
+          "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+
+        "&:hover": {
+          transform: "translateY(-2px)",
+
+          borderColor:
+            "rgba(59,130,246,0.28)",
+
+          boxShadow:
+            "0 12px 32px rgba(0,0,0,0.16)",
+        },
       }}
     >
       <Box
@@ -124,6 +144,11 @@ export default function SystemAlerts() {
           color="text.secondary"
           sx={{
             mt: 0.5,
+
+            fontSize: {
+              xs: 12,
+              sm: 13,
+            },
           }}
         >
           Platform events requiring attention
@@ -131,7 +156,8 @@ export default function SystemAlerts() {
       </Box>
       <Stack
         spacing={{
-          xs: 1.5,
+          xs: 1.25,
+          sm: 1.5,
           md: 2,
         }}
       >
@@ -156,8 +182,22 @@ export default function SystemAlerts() {
                 sm: 1.25,
               },
 
+              backgroundColor:
+                "rgba(255,255,255,0.015)",
+
+              transition:
+                "background-color 180ms ease, transform 180ms ease",
+
+              "&:hover": {
+                backgroundColor:
+                  "rgba(255,255,255,0.035)",
+
+                transform: "translateX(2px)",
+              },
+
               "& .MuiAlert-icon": {
                 mt: 0.25,
+
                 mr: {
                   xs: 1,
                   sm: 1.5,
@@ -166,6 +206,7 @@ export default function SystemAlerts() {
 
               "& .MuiAlert-message": {
                 minWidth: 0,
+
                 width: "100%",
               },
             }}
@@ -178,6 +219,8 @@ export default function SystemAlerts() {
                 },
 
                 fontWeight: 700,
+
+                lineHeight: 1.4,
               }}
             >
               {alert.title}
@@ -213,7 +256,7 @@ export default function SystemAlerts() {
 
                 display: "block",
 
-                mt: 0.5,
+                mt: 0.75,
               }}
             >
               {alert.time}

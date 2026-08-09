@@ -35,25 +35,29 @@ const conversations: Conversation[] = [
   {
     id: "chat-001",
     title: "Enterprise RAG Architecture",
-    preview: "How should we structure the retrieval pipeline?",
+    preview:
+      "How should we structure the retrieval pipeline?",
     time: "8 min ago",
   },
   {
     id: "chat-002",
     title: "AI Governance Policy",
-    preview: "Summarize the key governance requirements.",
+    preview:
+      "Summarize the key governance requirements.",
     time: "25 min ago",
   },
   {
     id: "chat-003",
     title: "Agentic Workflow Design",
-    preview: "Compare sequential and parallel orchestration.",
+    preview:
+      "Compare sequential and parallel orchestration.",
     time: "42 min ago",
   },
   {
     id: "chat-004",
     title: "Knowledge Base Optimization",
-    preview: "How can we improve retrieval accuracy?",
+    preview:
+      "How can we improve retrieval accuracy?",
     time: "1 hour ago",
   },
 ];
@@ -84,9 +88,27 @@ export default function RecentConversations() {
         },
 
         border: "1px solid",
-        borderColor: "divider",
+        borderColor:
+          "rgba(148,163,184,0.15)",
 
-        backgroundColor: "background.paper",
+        background:
+          "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96))",
+
+        boxShadow:
+          "0 8px 28px rgba(0,0,0,0.10)",
+
+        transition:
+          "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+
+        "&:hover": {
+          transform: "translateY(-2px)",
+
+          borderColor:
+            "rgba(59,130,246,0.28)",
+
+          boxShadow:
+            "0 12px 32px rgba(0,0,0,0.16)",
+        },
       }}
     >
       <Box
@@ -94,6 +116,7 @@ export default function RecentConversations() {
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "space-between",
+
           gap: 2,
 
           mb: {
@@ -117,6 +140,8 @@ export default function RecentConversations() {
                 sm: 17,
                 md: 18,
               },
+
+              letterSpacing: -0.2,
             }}
           >
             Recent Conversations
@@ -127,6 +152,11 @@ export default function RecentConversations() {
             color="text.secondary"
             sx={{
               mt: 0.5,
+
+              fontSize: {
+                xs: 12,
+                sm: 13,
+              },
             }}
           >
             Latest AI workspace activity
@@ -138,6 +168,13 @@ export default function RecentConversations() {
           aria-label="More conversation options"
           sx={{
             flexShrink: 0,
+
+            borderRadius: 2,
+
+            "&:hover": {
+              backgroundColor:
+                "rgba(59,130,246,0.10)",
+            },
           }}
         >
           <MoreHoriz />
@@ -154,6 +191,7 @@ export default function RecentConversations() {
             key={conversation.id}
             sx={{
               display: "flex",
+
               alignItems: "center",
 
               gap: {
@@ -174,11 +212,20 @@ export default function RecentConversations() {
 
               cursor: "pointer",
 
+              border:
+                "1px solid transparent",
+
               transition:
-                "background-color 0.2s ease",
+                "background-color 180ms ease, border-color 180ms ease, transform 180ms ease",
 
               "&:hover": {
-                backgroundColor: "action.hover",
+                backgroundColor:
+                  "rgba(255,255,255,0.035)",
+
+                borderColor:
+                  "rgba(148,163,184,0.10)",
+
+                transform: "translateX(2px)",
               },
             }}
           >
@@ -195,6 +242,14 @@ export default function RecentConversations() {
                 },
 
                 flexShrink: 0,
+
+                color: "primary.light",
+
+                backgroundColor:
+                  "rgba(59,130,246,0.09)",
+
+                border:
+                  "1px solid rgba(59,130,246,0.12)",
               }}
             >
               <ChatBubbleOutlined
@@ -217,6 +272,12 @@ export default function RecentConversations() {
                 noWrap
                 sx={{
                   fontWeight: 600,
+
+                  fontSize: {
+                    xs: 12,
+                    sm: 13,
+                    md: 14,
+                  },
                 }}
               >
                 {conversation.title}
@@ -228,7 +289,14 @@ export default function RecentConversations() {
                 noWrap
                 sx={{
                   display: "block",
+
                   mt: 0.25,
+
+                  fontSize: {
+                    xs: 10,
+                    sm: 11,
+                    md: 12,
+                  },
                 }}
               >
                 {conversation.preview}
@@ -243,6 +311,11 @@ export default function RecentConversations() {
                 display: {
                   xs: "none",
                   sm: "block",
+                },
+
+                fontSize: {
+                  sm: 10,
+                  md: 11,
                 },
               }}
             >
