@@ -97,20 +97,9 @@ export default function Dashboard() {
           minWidth: 0,
         }}
       >
-        {/* Dashboard Header */}
-
         <DashboardHeader />
-
-        {/* Welcome Banner */}
-
         <WelcomeBanner />
-
-        {/* KPI Section */}
-
         <KpiGrid />
-
-        {/* AI Operations */}
-
         <Grid
           container
           spacing={{
@@ -137,9 +126,6 @@ export default function Dashboard() {
             <AgentHealth />
           </Grid>
         </Grid>
-
-        {/* Knowledge & Conversations */}
-
         <Grid
           container
           spacing={{
@@ -166,9 +152,6 @@ export default function Dashboard() {
             <RecentConversations />
           </Grid>
         </Grid>
-
-        {/* Workflow & Alerts */}
-
         <Grid
           container
           spacing={{
@@ -195,9 +178,6 @@ export default function Dashboard() {
             <SystemAlerts />
           </Grid>
         </Grid>
-
-        {/* Activity */}
-
         <ActivityTimeline />
       </Stack>
     </Box>

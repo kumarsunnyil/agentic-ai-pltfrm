@@ -89,8 +89,6 @@ export default function RecentConversations() {
         backgroundColor: "background.paper",
       }}
     >
-      {/* Header */}
-
       <Box
         sx={{
           display: "flex",
@@ -145,9 +143,6 @@ export default function RecentConversations() {
           <MoreHoriz />
         </IconButton>
       </Box>
-
-      {/* Conversations */}
-
       <Stack
         spacing={{
           xs: 0.75,
@@ -187,8 +182,6 @@ export default function RecentConversations() {
               },
             }}
           >
-            {/* Avatar */}
-
             <Avatar
               sx={{
                 width: {
@@ -213,9 +206,6 @@ export default function RecentConversations() {
                 }}
               />
             </Avatar>
-
-            {/* Conversation */}
-
             <Box
               sx={{
                 minWidth: 0,
@@ -244,9 +234,6 @@ export default function RecentConversations() {
                 {conversation.preview}
               </Typography>
             </Box>
-
-            {/* Time */}
-
             <Typography
               variant="caption"
               color="text.secondary"

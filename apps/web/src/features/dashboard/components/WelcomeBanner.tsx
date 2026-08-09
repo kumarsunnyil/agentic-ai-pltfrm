@@ -154,10 +154,6 @@ export default function WelcomeBanner() {
             width: "100%",
           }}
         >
-          {/* ==================================================
-              LEFT CONTENT
-              ================================================== */}
-
           <Box
             sx={{
               flex: 1,
@@ -176,8 +172,6 @@ export default function WelcomeBanner() {
               },
             }}
           >
-            {/* Platform badge */}
-
             <Chip
               icon={
                 <AutoAwesomeRoundedIcon
@@ -222,9 +216,6 @@ export default function WelcomeBanner() {
                 },
               }}
             />
-
-            {/* Title */}
-
             <Typography
               variant="h3"
               sx={{
@@ -248,9 +239,6 @@ export default function WelcomeBanner() {
             >
               Enterprise Command Center
             </Typography>
-
-            {/* Description */}
-
             <Typography
               sx={{
                 mt: 1.5,
@@ -278,9 +266,6 @@ export default function WelcomeBanner() {
               analytics, and real-time platform health from
               a single command center.
             </Typography>
-
-            {/* Actions */}
-
             <Stack
               direction={{
                 xs: "column",
@@ -413,11 +398,6 @@ export default function WelcomeBanner() {
               </Button>
             </Stack>
           </Box>
-
-          {/* ==================================================
-              RIGHT PLATFORM STATUS
-              ================================================== */}
-
           <Box
             sx={{
               width: {
@@ -459,8 +439,6 @@ export default function WelcomeBanner() {
                   "inset 0 1px 0 rgba(255,255,255,0.08)",
               }}
             >
-              {/* Status heading */}
-
               <Typography
                 sx={{
                   fontSize: {
@@ -475,9 +453,6 @@ export default function WelcomeBanner() {
               >
                 AI Platform Status
               </Typography>
-
-              {/* Status metrics */}
-
               <Stack
                 direction="row"
                 spacing={1.5}
@@ -485,8 +460,6 @@ export default function WelcomeBanner() {
                   width: "100%",
                 }}
               >
-                {/* Agents */}
-
                 <Box
                   sx={{
                     flex: 1,
@@ -559,9 +532,6 @@ export default function WelcomeBanner() {
                     </Typography>
                   </Box>
                 </Box>
-
-                {/* Documents */}
-
                 <Box
                   sx={{
                     flex: 1,
@@ -645,8 +615,6 @@ export default function WelcomeBanner() {
                   mt: 1.5,
                 }}
               >
-                {/* Models */}
-
                 <Box
                   sx={{
                     flex: 1,
@@ -719,21 +687,13 @@ export default function WelcomeBanner() {
                     </Typography>
                   </Box>
                 </Box>
-
-                {/* Workflows */}
-
                 <Box
                   sx={{
                     flex: 1,
-
                     minWidth: 0,
-
                     p: 1.25,
-
                     borderRadius: 2,
-
                     textAlign: "center",
-
                     backgroundColor:
                       "rgba(255,255,255,0.07)",
                   }}

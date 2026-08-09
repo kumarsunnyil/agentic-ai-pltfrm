@@ -42,14 +42,9 @@ export default function AppSidebar({
         backgroundColor: "background.paper",
       }}
     >
-      {/* Logo */}
-
       <Logo />
 
       <Divider />
-
-      {/* Navigation */}
-
       <Box
         sx={{
           flex: 1,
@@ -130,7 +125,6 @@ export default function AppSidebar({
       >
         {sidebarContent}
       </Drawer>
-
       <Drawer
         variant="temporary"
         open={mobileOpen}

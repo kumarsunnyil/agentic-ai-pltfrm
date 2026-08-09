@@ -47,8 +47,6 @@ export default function VersionInfo() {
         flexShrink: 0,
       }}
     >
-      {/* Desktop / Mobile */}
-
       <Typography
         variant="caption"
         color="text.secondary"
@@ -64,9 +62,6 @@ export default function VersionInfo() {
       >
         Version {VERSION}
       </Typography>
-
-      {/* Tablet */}
-
       <Tooltip title={`Version ${VERSION}`} placement="right">
         <Typography
           variant="caption"
@@ -77,13 +72,9 @@ export default function VersionInfo() {
               md: "block",
               lg: "none",
             },
-
             fontWeight: 600,
-
             fontSize: 10,
-
             lineHeight: 1,
-
             cursor: "default",
           }}
         >

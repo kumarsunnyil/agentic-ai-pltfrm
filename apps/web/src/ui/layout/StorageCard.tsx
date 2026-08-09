@@ -37,10 +37,6 @@ export default function StorageCard() {
         flexShrink: 0,
       }}
     >
-      {/* ---------------------------------------------------
-          Full Storage Card
-          --------------------------------------------------- */}
-
       <Paper
         elevation={0}
         sx={{
@@ -51,13 +47,9 @@ export default function StorageCard() {
           },
 
           p: 2,
-
           borderRadius: 3,
-
           backgroundColor: "background.default",
-
           border: "1px solid",
-
           borderColor: "divider",
         }}
       >
@@ -75,9 +67,7 @@ export default function StorageCard() {
           value={STORAGE_USED}
           sx={{
             my: 2,
-
             height: 8,
-
             borderRadius: 5,
           }}
         />
@@ -85,9 +75,7 @@ export default function StorageCard() {
         <Box
           sx={{
             display: "flex",
-
             justifyContent: "space-between",
-
             gap: 1,
           }}
         >
@@ -106,11 +94,6 @@ export default function StorageCard() {
           </Typography>
         </Box>
       </Paper>
-
-      {/* ---------------------------------------------------
-          Compact Tablet Storage Indicator
-          --------------------------------------------------- */}
-
       <Box
         sx={{
           display: {
@@ -118,15 +101,10 @@ export default function StorageCard() {
             md: "flex",
             lg: "none",
           },
-
           flexDirection: "column",
-
           alignItems: "center",
-
           justifyContent: "center",
-
           gap: 1,
-
           py: 1,
         }}
         title={`${STORAGE_USED} GB of ${STORAGE_TOTAL} GB used`}

@@ -50,7 +50,6 @@ export default function AppLayout({
         mobileOpen={mobileSidebarOpen}
         onMobileClose={handleMobileSidebarClose}
       />
-
       <Box
         component="main"
         sx={{
@@ -62,14 +61,9 @@ export default function AppLayout({
           overflow: "hidden",
         }}
       >
-        {/* Header */}
-
         <AppHeader
           onMenuClick={handleMobileSidebarOpen}
         />
-
-        {/* Page Content */}
-
         <Box
           sx={{
             flex: 1,

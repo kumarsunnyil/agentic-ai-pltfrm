@@ -96,8 +96,6 @@ export default function SystemAlerts() {
         backgroundColor: "background.paper",
       }}
     >
-      {/* Header */}
-
       <Box
         sx={{
           mb: {
@@ -131,9 +129,6 @@ export default function SystemAlerts() {
           Platform events requiring attention
         </Typography>
       </Box>
-
-      {/* Alerts */}
-
       <Stack
         spacing={{
           xs: 1.5,

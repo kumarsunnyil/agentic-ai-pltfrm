@@ -111,20 +111,14 @@ export default function AppHeader({
             >
               <MenuOutlinedIcon />
             </IconButton>
-
-            {/* Breadcrumbs */}
-
             <Box
               sx={{
                 display: {
                   xs: "none",
                   sm: "block",
                 },
-
                 minWidth: 0,
-
                 overflow: "hidden",
-
                 "& .MuiBreadcrumbs-ol": {
                   flexWrap: "nowrap",
                 },
@@ -148,21 +142,17 @@ export default function AppHeader({
               flexShrink: 0,
             }}
           >
-            {/* Search */}
-
             <Box
               sx={{
                 display: {
                   xs: "none",
                   sm: "block",
                 },
-
                 width: {
                   sm: 220,
                   md: 320,
                   lg: 420,
                 },
-
                 maxWidth: "35vw",
               }}
             >

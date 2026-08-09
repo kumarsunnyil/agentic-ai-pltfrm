@@ -86,8 +86,6 @@ export default function ActivityTimeline() {
                 backgroundColor: "background.paper",
             }}
         >
-            {/* Header */}
-
             <Box
                 sx={{
                     mb: {
@@ -121,9 +119,6 @@ export default function ActivityTimeline() {
                     Latest platform events
                 </Typography>
             </Box>
-
-            {/* Timeline */}
-
             <Stack
                 spacing={{
                     xs: 2,
@@ -150,8 +145,6 @@ export default function ActivityTimeline() {
                                 minWidth: 0,
                             }}
                         >
-                            {/* Icon */}
-
                             <Box
                                 sx={{
                                     width: {
@@ -188,9 +181,6 @@ export default function ActivityTimeline() {
                                     }}
                                 />
                             </Box>
-
-                            {/* Content */}
-
                             <Box
                                 sx={{
                                     minWidth: 0,

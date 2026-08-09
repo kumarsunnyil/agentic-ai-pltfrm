@@ -87,8 +87,6 @@ export default function RecentDocuments() {
         backgroundColor: "background.paper",
       }}
     >
-      {/* Header */}
-
       <Box
         sx={{
           display: "flex",
@@ -141,9 +139,6 @@ export default function RecentDocuments() {
           <MoreHorizIcon />
         </IconButton>
       </Box>
-
-      {/* Documents */}
-
       <Stack
         spacing={{
           xs: 1,
@@ -177,8 +172,6 @@ export default function RecentDocuments() {
               },
             }}
           >
-            {/* Icon */}
-
             <Box
               sx={{
                 width: {
@@ -212,9 +205,6 @@ export default function RecentDocuments() {
                 }}
               />
             </Box>
-
-            {/* Content */}
-
             <Box
               sx={{
                 minWidth: 0,
@@ -243,9 +233,6 @@ export default function RecentDocuments() {
                 {document.type} • {document.time}
               </Typography>
             </Box>
-
-            {/* Status */}
-
             <Chip
               label={document.status}
               size="small"
