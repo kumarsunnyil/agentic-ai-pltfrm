@@ -1,7 +1,7 @@
 /**
  * ------------------------------------------------------------
- * @file: src/features/dashboard/components/ActivityTimeline.tsx
- * @description: Responsive enterprise platform activity timeline.
+ * @file: src/features/dashboard/components/WorkflowStatus.tsx
+ * @description: Responsive enterprise workflow status widget.
  * @author: Sunil.S.Kumar
  * @date: 08-08-2026
  * @project: Enterprise Agentic AI Platform
@@ -10,82 +10,78 @@
 
 "use client";
 
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 
 import {
   Box,
   Chip,
+  LinearProgress,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
 
-interface Activity {
+interface Workflow {
   id: string;
-  title: string;
-  description: string;
-  time: string;
-  type: "agent" | "document" | "workflow";
+  name: string;
+  status: "Running" | "Completed" | "Queued";
+  progress: number;
 }
 
-const activities: Activity[] = [
+const workflows: Workflow[] = [
   {
-    id: "activity-001",
-    title: "AI Agent completed execution",
-    description: "Document Classification Agent processed 128 documents.",
-    time: "8 min ago",
-    type: "agent",
+    id: "wf-001",
+    name: "Document Ingestion",
+    status: "Running",
+    progress: 72,
   },
   {
-    id: "activity-002",
-    title: "Knowledge document indexed",
-    description: "Enterprise AI Architecture was added to the knowledge base.",
-    time: "21 min ago",
-    type: "document",
+    id: "wf-002",
+    name: "Knowledge Synchronization",
+    status: "Running",
+    progress: 48,
   },
   {
-    id: "activity-003",
-    title: "Workflow completed",
-    description: "Knowledge Indexing workflow completed successfully.",
-    time: "38 min ago",
-    type: "workflow",
+    id: "wf-003",
+    name: "Daily AI Evaluation",
+    status: "Queued",
+    progress: 0,
+  },
+  {
+    id: "wf-004",
+    name: "Vector Index Refresh",
+    status: "Completed",
+    progress: 100,
   },
 ];
 
-const activityIcons = {
-  agent: SmartToyOutlinedIcon,
-  document: DescriptionOutlinedIcon,
-  workflow: CheckCircleOutlineIcon,
-};
+const statusColor = {
+  Running: "info",
+  Completed: "success",
+  Queued: "warning",
+} as const;
 
-const activityLabels = {
-  agent: "AI Agent",
-  document: "Knowledge",
-  workflow: "Workflow",
-};
-
-export default function ActivityTimeline() {
-  const agentActivities = activities.filter(
-    (activity) => activity.type === "agent",
-  ).length;
-
-  const documentActivities = activities.filter(
-    (activity) => activity.type === "document",
-  ).length;
-
-  const workflowActivities = activities.filter(
-    (activity) => activity.type === "workflow",
-  ).length;
-
+export default function WorkflowStatus() {
   return (
     <Paper
       elevation={0}
       sx={{
         width: "100%",
-        p: { xs: 2, sm: 2.5, md: 3 },
-        borderRadius: { xs: 2.5, md: 4 },
+        height: "100%",
+        minHeight: {
+          xs: 390,
+          sm: 420,
+          md: 450,
+        },
+        p: {
+          xs: 2,
+          sm: 2.5,
+          md: 3,
+        },
+        borderRadius: {
+          xs: 2.5,
+          md: 4,
+        },
         border: "1px solid",
         borderColor: "rgba(148,163,184,0.15)",
         background: "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96))",
@@ -101,21 +97,61 @@ export default function ActivityTimeline() {
       <Box
         sx={{
           display: "flex",
-          alignItems: { xs: "flex-start", sm: "center" },
-          justifyContent: "space-between",
-          gap: 2,
-          mb: { xs: 2, md: 2.5 },
+          alignItems: "center",
+          gap: 1.5,
+          mb: {
+            xs: 2,
+            md: 3,
+          },
         }}
       >
-        <Box sx={{ minWidth: 0 }}>
+        <Box
+          sx={{
+            width: {
+              xs: 38,
+              sm: 42,
+            },
+            height: {
+              xs: 38,
+              sm: 42,
+            },
+            borderRadius: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            color: "primary.light",
+            background: "rgba(59,130,246,0.09)",
+            border: "1px solid rgba(59,130,246,0.12)",
+          }}
+        >
+          <AccountTreeOutlinedIcon
+            sx={{
+              fontSize: {
+                xs: 20,
+                sm: 22,
+              },
+            }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            minWidth: 0,
+          }}
+        >
           <Typography
             variant="h6"
             sx={{
               fontWeight: 700,
-              fontSize: { xs: 16, sm: 17, md: 18 },
+              fontSize: {
+                xs: 16,
+                sm: 17,
+                md: 18,
+              },
             }}
           >
-            Recent Activity
+            Workflow Status
           </Typography>
 
           <Typography
@@ -123,241 +159,142 @@ export default function ActivityTimeline() {
             color="text.secondary"
             sx={{
               mt: 0.5,
-              fontSize: { xs: 12, sm: 13 },
+              fontSize: {
+                xs: 12,
+                sm: 13,
+              },
             }}
           >
-            Latest platform events
+            Active platform workflows
           </Typography>
         </Box>
-
-        <Chip
-          label={`${activities.length} Events`}
-          size="small"
-          variant="outlined"
-          color="primary"
-          sx={{
-            flexShrink: 0,
-            height: { xs: 24, sm: 26 },
-            fontSize: { xs: 10, sm: 11 },
-            fontWeight: 600,
-          }}
-        />
       </Box>
 
       <Stack
-        direction="row"
-        spacing={{ xs: 1, sm: 1.5 }}
-        sx={{ mb: { xs: 2.5, md: 3 } }}
+        spacing={{
+          xs: 1.75,
+          sm: 2,
+          md: 2.5,
+        }}
       >
-        <Box
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            px: { xs: 1, sm: 1.25 },
-            py: { xs: 0.75, sm: 1 },
-            borderRadius: 2,
-            backgroundColor: "rgba(59,130,246,0.06)",
-            border: "1px solid rgba(59,130,246,0.10)",
-          }}
-        >
-          <Typography variant="caption" color="text.secondary">
-            Agents
-          </Typography>
-
-          <Typography
+        {workflows.map((workflow) => (
+          <Box
+            key={workflow.id}
             sx={{
-              mt: 0.25,
-              fontWeight: 700,
-              fontSize: { xs: 16, sm: 18 },
+              p: {
+                xs: 1.25,
+                sm: 1.5,
+              },
+              borderRadius: 2,
+              border: "1px solid rgba(148,163,184,0.08)",
+              backgroundColor: "rgba(255,255,255,0.015)",
+              transition: "background-color 180ms ease, border-color 180ms ease",
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.035)",
+                borderColor: "rgba(148,163,184,0.14)",
+              },
             }}
           >
-            {agentActivities}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            px: { xs: 1, sm: 1.25 },
-            py: { xs: 0.75, sm: 1 },
-            borderRadius: 2,
-            backgroundColor: "rgba(168,85,247,0.06)",
-            border: "1px solid rgba(168,85,247,0.10)",
-          }}
-        >
-          <Typography variant="caption" color="text.secondary">
-            Knowledge
-          </Typography>
-
-          <Typography
-            sx={{
-              mt: 0.25,
-              fontWeight: 700,
-              fontSize: { xs: 16, sm: 18 },
-            }}
-          >
-            {documentActivities}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            px: { xs: 1, sm: 1.25 },
-            py: { xs: 0.75, sm: 1 },
-            borderRadius: 2,
-            backgroundColor: "rgba(34,197,94,0.06)",
-            border: "1px solid rgba(34,197,94,0.10)",
-          }}
-        >
-          <Typography variant="caption" color="text.secondary">
-            Workflows
-          </Typography>
-
-          <Typography
-            sx={{
-              mt: 0.25,
-              fontWeight: 700,
-              fontSize: { xs: 16, sm: 18 },
-            }}
-          >
-            {workflowActivities}
-          </Typography>
-        </Box>
-      </Stack>
-
-      <Stack
-        spacing={{ xs: 2, md: 2.5 }}
-      >
-        {activities.map((activity, index) => {
-          const ActivityIcon = activityIcons[activity.type];
-          const isLast = index === activities.length - 1;
-
-          return (
             <Box
-              key={activity.id}
               sx={{
-                position: "relative",
                 display: "flex",
-                alignItems: "flex-start",
-                gap: { xs: 1.5, sm: 2 },
-                minWidth: 0,
+                justifyContent: "space-between",
+                alignItems: {
+                  xs: "flex-start",
+                  sm: "center",
+                },
+                gap: 1.5,
+                mb: 1,
               }}
             >
-              {!isLast && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    left: { xs: 17, sm: 20 },
-                    top: { xs: 36, sm: 42 },
-                    bottom: { xs: -24, md: -28 },
-                    width: 1,
-                    backgroundColor: "rgba(148,163,184,0.16)",
-                  }}
-                />
-              )}
-
-              <Box
-                sx={{
-                  position: "relative",
-                  zIndex: 1,
-                  width: { xs: 36, sm: 42 },
-                  height: { xs: 36, sm: 42 },
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  color: "primary.light",
-                  background: "rgba(59,130,246,0.10)",
-                  border: "1px solid rgba(59,130,246,0.18)",
-                  boxShadow: "0 0 0 4px rgba(15,23,42,0.85)",
-                }}
-              >
-                <ActivityIcon
-                  sx={{
-                    fontSize: { xs: 18, sm: 21 },
-                  }}
-                />
-              </Box>
-
-              <Box
+              <Typography
+                variant="body2"
+                noWrap
                 sx={{
                   minWidth: 0,
-                  flex: 1,
-                  pb: isLast ? 0 : 0.25,
+                  fontWeight: 600,
+                  fontSize: {
+                    xs: 12,
+                    sm: 13,
+                    md: 14,
+                  },
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    alignItems: { xs: "flex-start", sm: "center" },
-                    justifyContent: "space-between",
-                    gap: { xs: 0.5, sm: 2 },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      minWidth: 0,
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontWeight: 600,
-                        fontSize: { xs: 12, sm: 13, md: 14 },
-                      }}
-                    >
-                      {activity.title}
-                    </Typography>
+                {workflow.name}
+              </Typography>
 
-                    <Chip
-                      label={activityLabels[activity.type]}
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        display: { xs: "none", md: "inline-flex" },
-                        height: 21,
-                        fontSize: 10,
-                        fontWeight: 600,
-                      }}
-                    />
-                  </Box>
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{
-                      flexShrink: 0,
-                      fontSize: { xs: 10, sm: 11 },
-                    }}
-                  >
-                    {activity.time}
-                  </Typography>
-                </Box>
-
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{
-                    mt: 0.5,
-                    fontSize: { xs: 12, sm: 13 },
-                    lineHeight: 1.5,
-                    maxWidth: 900,
-                  }}
-                >
-                  {activity.description}
-                </Typography>
-              </Box>
+              <Chip
+                label={workflow.status}
+                color={statusColor[workflow.status]}
+                size="small"
+                sx={{
+                  flexShrink: 0,
+                  height: {
+                    xs: 23,
+                    sm: 25,
+                  },
+                  fontSize: {
+                    xs: 10,
+                    sm: 11,
+                  },
+                  fontWeight: 600,
+                }}
+              />
             </Box>
-          );
-        })}
+
+            <LinearProgress
+              variant="determinate"
+              value={workflow.progress}
+              sx={{
+                height: {
+                  xs: 6,
+                  sm: 7,
+                },
+                borderRadius: 10,
+                backgroundColor: "rgba(148,163,184,0.12)",
+                "& .MuiLinearProgress-bar": {
+                  borderRadius: 10,
+                },
+              }}
+            />
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mt: 0.75,
+              }}
+            >
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  fontSize: {
+                    xs: 10,
+                    sm: 11,
+                  },
+                }}
+              >
+                Progress
+              </Typography>
+
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  fontSize: {
+                    xs: 10,
+                    sm: 11,
+                  },
+                  fontWeight: 600,
+                }}
+              >
+                {workflow.progress}%
+              </Typography>
+            </Box>
+          </Box>
+        ))}
       </Stack>
     </Paper>
   );
