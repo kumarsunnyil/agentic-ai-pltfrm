@@ -8,12 +8,8 @@
  * ------------------------------------------------------------
  */
 
-import { AI_USAGE_DATA } from "../constants/chart.constants";
-import { KPI_DATA } from "../constants/dashboard.constants";
+import { DASHBOARD_DATA } from "../constants/dashboard.data";
 
-export async function getDashboardData() {
-  return {
-    kpis: KPI_DATA,
-    aiUsage: AI_USAGE_DATA,
-  };
+export function getDashboardData() {
+  return DASHBOARD_DATA;
 }
