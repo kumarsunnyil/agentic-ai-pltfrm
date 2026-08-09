@@ -8,39 +8,35 @@
  * ------------------------------------------------------------
  */
 
+import { DashboardKpi } from "../types/dashboard.types";
 
-import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import ChatBubbleOutlinedIcon from "@mui/icons-material/ChatBubbleOutlined";
-import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
-
-export const KPI_DATA = [
+export const KPI_DATA: DashboardKpi[] = [
   {
-    id: 1,
+    id: "agents",
     title: "AI Agents",
     value: 24,
     subtitle: "Active agents",
-    icon: AutoAwesomeRoundedIcon,
+    icon: "agents",
   },
   {
-    id: 2,
+    id: "documents",
     title: "Documents",
     value: 1248,
     subtitle: "Knowledge documents",
-    icon: DescriptionOutlinedIcon,
+    icon: "documents",
   },
   {
-    id: 3,
+    id: "chats",
     title: "AI Chats",
     value: 386,
     subtitle: "Conversations",
-    icon: ChatBubbleOutlinedIcon,
+    icon: "chats",
   },
   {
-    id: 4,
+    id: "workflows",
     title: "Workflows",
     value: 16,
     subtitle: "Active workflows",
-    icon: AccountTreeOutlinedIcon,
+    icon: "workflows",
   },
 ];
