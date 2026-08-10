@@ -21,39 +21,11 @@ import {
   Typography,
 } from "@mui/material";
 
-interface Workflow {
-  id: string;
-  name: string;
-  status: "Running" | "Completed" | "Queued";
-  progress: number;
-}
+import type { DashboardWorkflow } from "../types/dashboard.types";
 
-const workflows: Workflow[] = [
-  {
-    id: "wf-001",
-    name: "Document Ingestion",
-    status: "Running",
-    progress: 72,
-  },
-  {
-    id: "wf-002",
-    name: "Knowledge Synchronization",
-    status: "Running",
-    progress: 48,
-  },
-  {
-    id: "wf-003",
-    name: "Daily AI Evaluation",
-    status: "Queued",
-    progress: 0,
-  },
-  {
-    id: "wf-004",
-    name: "Vector Index Refresh",
-    status: "Completed",
-    progress: 100,
-  },
-];
+interface WorkflowStatusProps {
+  workflows: DashboardWorkflow[];
+}
 
 const statusColor = {
   Running: "info",
@@ -61,7 +33,9 @@ const statusColor = {
   Queued: "warning",
 } as const;
 
-export default function WorkflowStatus() {
+export default function WorkflowStatus({
+  workflows,
+}: WorkflowStatusProps) {
   return (
     <Paper
       elevation={0}

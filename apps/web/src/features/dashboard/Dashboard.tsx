@@ -22,8 +22,10 @@ import RecentDocuments from "./components/RecentDocuments";
 import SystemAlerts from "./components/SystemAlerts";
 import WelcomeBanner from "./components/WelcomeBanner";
 import WorkflowStatus from "./components/WorkflowStatus";
+import { getDashboardData } from "./services/dashboard.service";
 
 export default function Dashboard() {
+  const dashboardData = getDashboardData();
   return (
     <Box
       sx={{
@@ -114,7 +116,7 @@ export default function Dashboard() {
               lg: 8,
             }}
           >
-            <AiUsageChart />
+            <AiUsageChart aiUsage={dashboardData.aiUsage} />
           </Grid>
 
           <Grid
@@ -123,7 +125,7 @@ export default function Dashboard() {
               lg: 4,
             }}
           >
-            <AgentHealth />
+            <AgentHealth agents={dashboardData.agents} />
           </Grid>
         </Grid>
         <Grid
@@ -140,7 +142,7 @@ export default function Dashboard() {
               md: 6,
             }}
           >
-            <RecentDocuments />
+            <RecentDocuments documents={dashboardData.documents} />
           </Grid>
 
           <Grid
@@ -149,7 +151,7 @@ export default function Dashboard() {
               md: 6,
             }}
           >
-            <RecentConversations />
+            <RecentConversations conversations={dashboardData.conversations} />
           </Grid>
         </Grid>
         <Grid
@@ -166,7 +168,7 @@ export default function Dashboard() {
               md: 7,
             }}
           >
-            <WorkflowStatus />
+            <WorkflowStatus workflows={dashboardData.workflows} />
           </Grid>
 
           <Grid
@@ -175,10 +177,10 @@ export default function Dashboard() {
               md: 5,
             }}
           >
-            <SystemAlerts />
+            <SystemAlerts alerts={dashboardData.alerts} />
           </Grid>
         </Grid>
-        <ActivityTimeline />
+        <ActivityTimeline activities={dashboardData.activities} />
       </Stack>
     </Box>
   );

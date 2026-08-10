@@ -8,7 +8,7 @@
  * ------------------------------------------------------------
  */
 
-import { AiUsageData } from "../types/chart.types";
+import type { AiUsageData } from "../types/chart.types";
 
 export const AI_USAGE_DATA: AiUsageData[] = [
     { day: "Mon", requests: 120, tokens: 1800 },

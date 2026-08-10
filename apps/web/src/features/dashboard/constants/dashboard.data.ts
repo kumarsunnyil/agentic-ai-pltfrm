@@ -9,6 +9,7 @@
  */
 
 import type { DashboardData } from "../types/dashboard.types";
+import { AI_USAGE_DATA } from "./chart.constants";
 
 export const DASHBOARD_DATA: DashboardData = {
     kpis: [
@@ -42,15 +43,7 @@ export const DASHBOARD_DATA: DashboardData = {
         },
     ],
 
-    aiUsage: [
-        { day: "Mon", requests: 120, tokens: 1800 },
-        { day: "Tue", requests: 180, tokens: 2500 },
-        { day: "Wed", requests: 150, tokens: 2200 },
-        { day: "Thu", requests: 260, tokens: 3600 },
-        { day: "Fri", requests: 320, tokens: 4700 },
-        { day: "Sat", requests: 290, tokens: 4300 },
-        { day: "Sun", requests: 360, tokens: 5400 },
-    ],
+    aiUsage: AI_USAGE_DATA,
 
     agents: [
         {
@@ -140,7 +133,7 @@ export const DASHBOARD_DATA: DashboardData = {
             id: "wf-002",
             name: "Knowledge Synchronization",
             status: "Running",
-            progress: 48,
+            progress: 51,
         },
         {
             id: "wf-003",

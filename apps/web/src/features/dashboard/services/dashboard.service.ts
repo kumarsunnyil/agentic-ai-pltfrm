@@ -9,7 +9,8 @@
  */
 
 import { DASHBOARD_DATA } from "../constants/dashboard.data";
+import type { DashboardData } from "../types/dashboard.types";
 
-export function getDashboardData() {
+export function getDashboardData(): DashboardData {
   return DASHBOARD_DATA;
 }

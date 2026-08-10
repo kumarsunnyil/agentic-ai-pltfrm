@@ -1,13 +1,14 @@
 /**
  * ------------------------------------------------------------
- * @file: src\features\dashboard\types\dashboard.types.ts
- * @description: Reusable Enterprise Dashboard types constants.
+ * @file: src/features/dashboard/types/dashboard.types.ts
+ * @description: Enterprise Dashboard types.
  * @author: Sunil.S.Kumar
  * @date: 09-08-2026
  * @project: Enterprise Agentic AI Platform
  * ------------------------------------------------------------
  */
 
+import type { AiUsageData } from "./chart.types";
 
 export interface DashboardKpi {
   id: string;
@@ -62,11 +63,7 @@ export interface DashboardActivity {
 
 export interface DashboardData {
   kpis: DashboardKpi[];
-  aiUsage: {
-    day: string;
-    requests: number;
-    tokens: number;
-  }[];
+  aiUsage: AiUsageData[];
   agents: DashboardAgent[];
   documents: DashboardDocument[];
   conversations: DashboardConversation[];

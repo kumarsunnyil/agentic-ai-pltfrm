@@ -24,41 +24,15 @@ import {
   Typography,
 } from "@mui/material";
 
-interface Conversation {
-  id: string;
-  title: string;
-  preview: string;
-  time: string;
+import type { DashboardConversation } from "../types/dashboard.types";
+
+interface RecentConversationsProps {
+  conversations: DashboardConversation[];
 }
 
-const conversations: Conversation[] = [
-  {
-    id: "chat-001",
-    title: "Enterprise RAG Architecture",
-    preview: "How should we structure the retrieval pipeline?",
-    time: "8 min ago",
-  },
-  {
-    id: "chat-002",
-    title: "AI Governance Policy",
-    preview: "Summarize the key governance requirements.",
-    time: "25 min ago",
-  },
-  {
-    id: "chat-003",
-    title: "Agentic Workflow Design",
-    preview: "Compare sequential and parallel orchestration.",
-    time: "42 min ago",
-  },
-  {
-    id: "chat-004",
-    title: "Knowledge Base Optimization",
-    preview: "How can we improve retrieval accuracy?",
-    time: "1 hour ago",
-  },
-];
-
-export default function RecentConversations() {
+export default function RecentConversations({
+  conversations,
+}: RecentConversationsProps) {
   return (
     <Paper
       elevation={0}

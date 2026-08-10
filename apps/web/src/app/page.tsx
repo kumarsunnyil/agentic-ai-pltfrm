@@ -1,46 +1,16 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Typography,
-} from "@mui/material";
+/**
+ * ------------------------------------------------------------
+ * @file: src\app\page.tsx
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 10-08-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
 
 
-export default function Home() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Paper
-        sx={{
-          p: 5,
-          width: 500,
-        }}
-      >
-        <Typography
-          variant="h4"
-          gutterBottom
-        >
-          Agentic AI Platform
-        </Typography>
+import { redirect } from "next/navigation";
 
-        <Typography
-          sx={{
-            mb: 3,
-          }}
-        >
-          Next.js 16 + Material UI 9
-        </Typography>
-
-        <Button variant="contained">
-          Get Started
-        </Button>
-      </Paper>
-    </Box>
-  );
+export default function HomePage() {
+  redirect("/dashboard");
 }
