@@ -10,7 +10,7 @@
 
 import type { DashboardData } from "../types/dashboard.types";
 
-const API_BASE_URL = process.env.BASE_API_URL ?? "http://localhost:5000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL  ?? "http://localhost:5000";
 
 export async function getDashboardData(): Promise<DashboardData> {
   const response = await fetch(`${API_BASE_URL}/api/dashboard`, {

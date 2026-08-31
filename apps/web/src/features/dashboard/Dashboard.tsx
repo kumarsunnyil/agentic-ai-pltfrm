@@ -45,7 +45,7 @@ export default function Dashboard() {
           setError(
             err instanceof Error
               ? err.message
-              : "Failed to load dashboard data.",
+              : "Failed! Dashboard data loading.",
           );
         }
       }
