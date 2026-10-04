@@ -9,11 +9,14 @@
  */
 
 import { Module } from '@nestjs/common';
+
 import { AgentsController } from './agents.controller';
 import { AgentsService } from './agents.service';
+import { AgentsRepository } from './repositories/agents.repository';
 
 @Module({
   controllers: [AgentsController],
-  providers: [AgentsService],
+  providers: [AgentsService, AgentsRepository],
+  exports: [AgentsService],
 })
 export class AgentsModule {}
