@@ -6,6 +6,8 @@ import { DocumentsService } from '../../documents/documents.service';
 import { ConversationsService } from '../../conversations/conversations.service';
 import { WorkflowsService } from '../../workflows/workflows.service';
 import { AnalyticsService } from '../../analytics/analytics.service';
+import { AlertsService } from '../../alerts/alerts.service';
+import { ActivitiesService } from '../../activities/activities.service';
 
 @Injectable()
 export class DashboardRepository {
@@ -16,6 +18,8 @@ export class DashboardRepository {
     private readonly conversationsService: ConversationsService,
     private readonly workflowsService: WorkflowsService,
     private readonly analyticsService: AnalyticsService,
+    private readonly alertsService: AlertsService,
+    private readonly activitiesService: ActivitiesService,
   ) {}
   getKpis(): DashboardData['kpis'] {
     return [
@@ -71,55 +75,11 @@ export class DashboardRepository {
   }
 
   getAlerts(): DashboardData['alerts'] {
-    return [
-      {
-        id: 'alert-001',
-        severity: 'warning',
-        title: 'High token usage detected',
-        description: 'AI Workspace usage increased by 28% in the last hour.',
-        time: '12 min ago',
-      },
-      {
-        id: 'alert-002',
-        severity: 'info',
-        title: 'Knowledge index updated',
-        description: 'The enterprise knowledge index completed successfully.',
-        time: '32 min ago',
-      },
-      {
-        id: 'alert-003',
-        severity: 'error',
-        title: 'Agent execution failed',
-        description: 'Document Classification Agent failed during execution.',
-        time: '48 min ago',
-      },
-    ];
+    return this.alertsService.getAlerts();
   }
 
   getActivities(): DashboardData['activities'] {
-    return [
-      {
-        id: 'activity-001',
-        title: 'AI Agent completed execution',
-        description: 'Document Classification Agent processed 128 documents.',
-        time: '8 min ago',
-        type: 'agent',
-      },
-      {
-        id: 'activity-002',
-        title: 'Knowledge document indexed',
-        description: 'Enterprise AI Architecture was added to the knowledge base.',
-        time: '21 min ago',
-        type: 'document',
-      },
-      {
-        id: 'activity-003',
-        title: 'Workflow completed',
-        description: 'Knowledge Indexing workflow completed successfully.',
-        time: '38 min ago',
-        type: 'workflow',
-      },
-    ];
+    return this.activitiesService.getActivities();
   }
 
   getDashboard(): DashboardData {

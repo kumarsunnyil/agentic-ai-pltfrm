@@ -12,6 +12,9 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
 import { WorkflowsModule } from './modules/workflows/workflows.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
+import { AlertsController } from './no-spec/modules/alerts/alerts.controller';
+import { AlertsService } from './no-spec/modules/alerts/alerts.service';
+import { ActivitiesModule } from './modules/activities/activities.module';
 
 @Module({
   imports: [
@@ -22,8 +25,9 @@ import { AlertsModule } from './modules/alerts/alerts.module';
     WorkflowsModule,
     AnalyticsModule,
     AlertsModule,
+    ActivitiesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AlertsController],
+  providers: [AppService, AlertsService],
 })
 export class AppModule {}

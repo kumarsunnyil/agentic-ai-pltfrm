@@ -8,10 +8,20 @@ import { DocumentsModule } from '../documents/documents.module';
 import { ConversationsModule } from '../conversations/conversations.module';
 import { WorkflowsModule } from '../workflows/workflows.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
+import { AlertsModule } from '../alerts/alerts.module';
+import { ActivitiesModule } from '../activities/activities.module';
 // import { WorkflowsModule } from '../workflows/workflows.module';
 
 @Module({
-  imports: [AgentsModule, DocumentsModule, ConversationsModule, WorkflowsModule, AnalyticsModule],
+  imports: [
+    AgentsModule,
+    DocumentsModule,
+    ConversationsModule,
+    WorkflowsModule,
+    AnalyticsModule,
+    AlertsModule,
+    ActivitiesModule,
+  ],
   controllers: [DashboardController],
   providers: [DashboardService, DashboardRepository],
   exports: [DashboardService],
