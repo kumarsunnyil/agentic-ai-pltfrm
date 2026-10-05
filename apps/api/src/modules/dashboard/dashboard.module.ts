@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 
 import { DashboardController } from './dashboard.controller';
-import { DashboardRepository } from './repositories/dashboard.repository';
 import { DashboardService } from './dashboard.service';
 import { AgentsModule } from '../agents/agents.module';
 import { DocumentsModule } from '../documents/documents.module';
@@ -10,7 +9,7 @@ import { WorkflowsModule } from '../workflows/workflows.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
 import { AlertsModule } from '../alerts/alerts.module';
 import { ActivitiesModule } from '../activities/activities.module';
-// import { WorkflowsModule } from '../workflows/workflows.module';
+import { DashboardKpiService } from './services/dashboard-kpi.service';
 
 @Module({
   imports: [
@@ -23,7 +22,7 @@ import { ActivitiesModule } from '../activities/activities.module';
     ActivitiesModule,
   ],
   controllers: [DashboardController],
-  providers: [DashboardService, DashboardRepository],
+  providers: [DashboardService, DashboardKpiService],
   exports: [DashboardService],
 })
 export class DashboardModule {}
