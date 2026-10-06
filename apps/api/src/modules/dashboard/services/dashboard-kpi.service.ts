@@ -15,11 +15,13 @@ export class DashboardKpiService {
     private readonly workflowsService: WorkflowsService,
   ) {}
 
-  getKpis(): DashboardData['kpis'] {
-    const agents = this.agentsService.getAgents();
-    const documents = this.documentsService.getDocuments();
-    const conversations = this.conversationsService.getConversations();
-    const workflows = this.workflowsService.getWorkflows();
+  async getKpis(): Promise<DashboardData['kpis']> {
+    const [agents, conversations, workflows, documentCount] = await Promise.all([
+      Promise.resolve(this.agentsService.getAgents()),
+      Promise.resolve(this.conversationsService.getConversations()),
+      Promise.resolve(this.workflowsService.getWorkflows()),
+      this.documentsService.countDocuments(),
+    ]);
 
     return [
       {
@@ -32,7 +34,7 @@ export class DashboardKpiService {
       {
         id: 'documents',
         title: 'Documents',
-        value: documents.length,
+        value: documentCount,
         subtitle: 'Knowledge documents',
         icon: 'documents',
       },

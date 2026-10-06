@@ -8,7 +8,7 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Get()
-  getDocuments(): Document[] {
+  async getDocuments(): Promise<Document[]> {
     return this.documentsService.getDocuments();
   }
 }

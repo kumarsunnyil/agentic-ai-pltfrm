@@ -23,16 +23,28 @@ export class DashboardService {
     private readonly activitiesService: ActivitiesService,
   ) {}
 
-  getDashboard(): DashboardData {
+  async getDashboard(): Promise<DashboardData> {
+    const [kpis, aiUsage, agents, documents, conversations, workflows, alerts, activities] =
+      await Promise.all([
+        this.dashboardKpiService.getKpis(),
+        Promise.resolve(this.analyticsService.getAiUsage()),
+        Promise.resolve(this.agentsService.getAgents()),
+        this.documentsService.getDocuments(),
+        Promise.resolve(this.conversationsService.getConversations()),
+        Promise.resolve(this.workflowsService.getWorkflows()),
+        Promise.resolve(this.alertsService.getAlerts()),
+        Promise.resolve(this.activitiesService.getActivities()),
+      ]);
+
     return {
-      kpis: this.dashboardKpiService.getKpis(),
-      aiUsage: this.analyticsService.getAiUsage(),
-      agents: this.agentsService.getAgents(),
-      documents: this.documentsService.getDocuments(),
-      conversations: this.conversationsService.getConversations(),
-      workflows: this.workflowsService.getWorkflows(),
-      alerts: this.alertsService.getAlerts(),
-      activities: this.activitiesService.getActivities(),
+      kpis,
+      aiUsage,
+      agents,
+      documents,
+      conversations,
+      workflows,
+      alerts,
+      activities,
     };
   }
 }
