@@ -8,7 +8,7 @@ export class ConversationsController {
   constructor(private readonly conversationsService: ConversationsService) {}
 
   @Get()
-  getConversations(): Conversation[] {
+  async getConversations(): Promise<Conversation[]> {
     return this.conversationsService.getConversations();
   }
 }

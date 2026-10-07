@@ -7,7 +7,11 @@ import type { Conversation } from './types/conversation.types';
 export class ConversationsService {
   constructor(private readonly conversationsRepository: ConversationsRepository) {}
 
-  getConversations(): Conversation[] {
-    return this.conversationsRepository.getConversations();
+  async getConversations(): Promise<Conversation[]> {
+    return this.conversationsRepository.findAll();
+  }
+
+  async countConversations(): Promise<number> {
+    return this.conversationsRepository.count();
   }
 }

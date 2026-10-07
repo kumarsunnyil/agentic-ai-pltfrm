@@ -1,16 +1,48 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\modules\analytics\repositories\analytics.repository.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 07-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { AiUsageEntity } from '../entities/ai-usage.entity';
 import type { AiUsage } from '../types/analytics.types';
+
 @Injectable()
 export class AnalyticsRepository {
-  getAiUsage(): AiUsage[] {
-    return [
-      { day: 'Mon', requests: 120, tokens: 1800 },
-      { day: 'Tue', requests: 180, tokens: 2500 },
-      { day: 'Wed', requests: 150, tokens: 2200 },
-      { day: 'Thu', requests: 260, tokens: 3600 },
-      { day: 'Fri', requests: 320, tokens: 4700 },
-      { day: 'Sat', requests: 290, tokens: 4300 },
-      { day: 'Sun', requests: 360, tokens: 5400 },
-    ];
+  constructor(
+    @InjectRepository(AiUsageEntity)
+    private readonly repository: Repository<AiUsageEntity>,
+  ) {}
+
+  async findAiUsage(): Promise<AiUsage[]> {
+    const usage = await this.repository.find({
+      order: {
+        usageDate: 'ASC',
+      },
+    });
+
+    return usage.map((item) => this.toDomain(item));
+  }
+
+  private toDomain(item: AiUsageEntity): AiUsage {
+    return {
+      day: this.formatDay(item.usageDate),
+      requests: item.requests,
+      tokens: item.tokens,
+    };
+  }
+
+  private formatDay(date: string): string {
+    return new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
+      weekday: 'short',
+    });
   }
 }

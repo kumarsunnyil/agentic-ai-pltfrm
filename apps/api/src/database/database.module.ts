@@ -1,3 +1,13 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\database\database.module.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 07-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,9 +29,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         database: configService.get<string>('DB_DATABASE'),
 
         autoLoadEntities: true,
-
-        synchronize: configService.get<string>('NODE_ENV') !== 'production',
-
+        // Commented after the migration test was confirmed
+        // synchronize: configService.get<string>('NODE_ENV') !== 'production',
+        synchronize: false,
+        migrationsRun: true,
+        migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: configService.get<string>('NODE_ENV') !== 'production',
       }),
     }),

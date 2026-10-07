@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------
- * @file: src\modules\analytics\types\analytics.types.ts
+ * @file: src\modules\activities\types\activity.types.ts
  * @description: Reusable Enterprise Dashboard Container.
  * @author: Sunil.S.Kumar
  * @date: 07-10-2026
@@ -8,8 +8,12 @@
  * ------------------------------------------------------------
  */
 
-export interface AiUsage {
-  day: string;
-  requests: number;
-  tokens: number;
+export type ActivityType = 'agent' | 'document' | 'workflow';
+
+export interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  time: string;
+  type: ActivityType;
 }

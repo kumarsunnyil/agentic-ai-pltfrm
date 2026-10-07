@@ -1,3 +1,13 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\modules\agents\agents.controller.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 06-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Controller, Get } from '@nestjs/common';
 
 import { AgentsService } from './agents.service';
@@ -8,7 +18,7 @@ export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
 
   @Get()
-  getAgents(): Agent[] {
+  async getAgents(): Promise<Agent[]> {
     return this.agentsService.getAgents();
   }
 }

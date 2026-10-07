@@ -1,3 +1,13 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\modules\documents\documents.module.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 06-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

@@ -1,3 +1,13 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\modules\agents\agents.service.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 06-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Injectable } from '@nestjs/common';
 
 import { AgentsRepository } from './repositories/agents.repository';
@@ -7,7 +17,11 @@ import type { Agent } from './types/agent.types';
 export class AgentsService {
   constructor(private readonly agentsRepository: AgentsRepository) {}
 
-  getAgents(): Agent[] {
-    return this.agentsRepository.getAgents();
+  async getAgents(): Promise<Agent[]> {
+    return this.agentsRepository.findAll();
+  }
+
+  async countActiveAgents(): Promise<number> {
+    return this.agentsRepository.countActive();
   }
 }

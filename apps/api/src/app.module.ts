@@ -11,7 +11,6 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
 import { WorkflowsModule } from './modules/workflows/workflows.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
-import { AlertsService } from './no-spec/modules/alerts/alerts.service';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { DatabaseModule } from './database/database.module';
 
@@ -32,6 +31,7 @@ import { DatabaseModule } from './database/database.module';
     ActivitiesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AlertsService],
+  providers: [AppService],
+  exports: [],
 })
 export class AppModule {}

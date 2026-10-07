@@ -1,31 +1,75 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\modules\alerts\repositories\alerts.repository.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 07-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import { Injectable } from '@nestjs/common';
-import { Alert } from '../types/alert.types';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { AlertEntity } from '../entities/alert.entity';
+import type { Alert } from '../types/alert.types';
 
 @Injectable()
 export class AlertsRepository {
-  getAlerts(): Alert[] {
-    return [
-      {
-        id: 'alert-001',
-        severity: 'warning',
-        title: 'High token usage detected',
-        description: 'AI Workspace usage increased by 28% in the last hour.',
-        time: '12 min ago',
+  constructor(
+    @InjectRepository(AlertEntity)
+    private readonly repository: Repository<AlertEntity>,
+  ) {}
+
+  async findAll(): Promise<Alert[]> {
+    const alerts = await this.repository.find({
+      order: {
+        createdAt: 'DESC',
       },
-      {
-        id: 'alert-002',
-        severity: 'info',
-        title: 'Knowledge index updated',
-        description: 'The enterprise knowledge index completed successfully.',
-        time: '32 min ago',
-      },
-      {
-        id: 'alert-003',
-        severity: 'error',
-        title: 'Agent execution failed',
-        description: 'Document Classification Agent failed during execution.',
-        time: '48 min ago',
-      },
-    ];
+    });
+
+    return alerts.map((alert) => this.toDomain(alert));
+  }
+
+  async count(): Promise<number> {
+    return this.repository.count();
+  }
+
+  private toDomain(alert: AlertEntity): Alert {
+    return {
+      id: alert.id,
+      severity: alert.severity,
+      title: alert.title,
+      description: alert.description,
+      time: this.formatRelativeTime(alert.createdAt),
+    };
+  }
+
+  private formatRelativeTime(date: Date): string {
+    const diffMs = Date.now() - date.getTime();
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMinutes < 1) {
+      return 'Just now';
+    }
+
+    if (diffMinutes < 60) {
+      return `${diffMinutes} min ago`;
+    }
+
+    const diffHours = Math.floor(diffMinutes / 60);
+
+    if (diffHours < 24) {
+      return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
+    }
+
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays < 7) {
+      return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
+    }
+
+    return date.toLocaleDateString();
   }
 }
