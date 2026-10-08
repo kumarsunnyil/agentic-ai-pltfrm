@@ -13,6 +13,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DatabaseModule } from './database/database.module';
     AnalyticsModule,
     AlertsModule,
     ActivitiesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
