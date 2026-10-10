@@ -114,4 +114,18 @@ export class AuthService {
       isActive: user.isActive,
     };
   }
+  async getCurrentUser(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+        isActive: true,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found or inactive');
+    }
+
+    return this.toPublicUser(user);
+  }
 }
