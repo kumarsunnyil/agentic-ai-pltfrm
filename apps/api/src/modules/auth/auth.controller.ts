@@ -8,7 +8,17 @@
  * ------------------------------------------------------------
  */
 
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Patch,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
@@ -19,29 +29,50 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import type { AuthenticatedUser } from './types/auth.types';
 import { UserRole } from './types/auth.types';
+import { UpdateUserRolesDto } from './dto/update-user-roles.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   *
+   * @param registerDto
+   * @returns
+   */
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
+  /**
+   *
+   * @param loginDto
+   * @returns
+   */
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
+  /**
+   *
+   * @param user
+   * @returns
+   */
   @Get('me')
   @UseGuards(JwtAuthGuard)
   getCurrentUser(@CurrentUser() user: AuthenticatedUser) {
     return this.authService.getCurrentUser(user.id);
   }
 
+  /**
+   *
+   * @param user
+   * @returns
+   */
   @Get('admin-test')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.Admin, UserRole.SuperAdmin)
@@ -54,5 +85,33 @@ export class AuthController {
         roles: user.roles,
       },
     };
+  }
+
+  /**
+   *
+   * @returns
+   */
+  @Get('users')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin, UserRole.SuperAdmin)
+  listUsers() {
+    return this.authService.listUsers();
+  }
+  /**
+   *
+   * @param actor
+   * @param userId
+   * @param dto
+   * @returns
+   */
+  @Patch('users/:id/roles')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SuperAdmin)
+  updateUserRoles(
+    @CurrentUser() actor: AuthenticatedUser,
+    @Param('id') userId: string,
+    @Body() dto: UpdateUserRolesDto,
+  ) {
+    return this.authService.updateUserRoles(actor.id, userId, dto.roles);
   }
 }

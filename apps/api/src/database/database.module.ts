@@ -34,7 +34,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: false,
         migrationsRun: true,
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
-        logging: configService.get<string>('NODE_ENV') !== 'production',
+        // logging: configService.get<string>('NODE_ENV') !== 'production', // switch on the logging for non production machines
+        // logging: false, //switch off the logging for all  machines
+        logging: ['error', 'warn'], // Log only the errors and warnings
       }),
     }),
   ],
