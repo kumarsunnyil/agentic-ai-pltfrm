@@ -224,4 +224,90 @@ export class AuthService {
       };
     });
   }
+  async getRoleAuditLogs(query: {
+    page?: string;
+    limit?: string;
+    actorUserId?: string;
+    targetUserId?: string;
+    dateFrom?: string;
+    dateTo?: string;
+  }) {
+    const page = Number(query.page ?? 1);
+    const limit = Number(query.limit ?? 20);
+
+    if (!Number.isInteger(page) || page < 1) {
+      throw new BadRequestException('page must be a positive integer');
+    }
+
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      throw new BadRequestException('limit must be between 1 and 100');
+    }
+
+    const isUuid = (value: string) =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+    for (const [name, value] of [
+      ['actorUserId', query.actorUserId],
+      ['targetUserId', query.targetUserId],
+    ] as const) {
+      if (value && !isUuid(value)) {
+        throw new BadRequestException(`${name} must be a valid UUID`);
+      }
+    }
+
+    const dateFrom = query.dateFrom ? new Date(query.dateFrom) : undefined;
+    const dateTo = query.dateTo ? new Date(query.dateTo) : undefined;
+
+    if (dateFrom && Number.isNaN(dateFrom.getTime())) {
+      throw new BadRequestException('dateFrom must be a valid date');
+    }
+
+    if (dateTo && Number.isNaN(dateTo.getTime())) {
+      throw new BadRequestException('dateTo must be a valid date');
+    }
+
+    if (dateFrom && dateTo && dateFrom > dateTo) {
+      throw new BadRequestException('dateFrom must not be later than dateTo');
+    }
+
+    const repository = this.dataSource.getRepository(RoleAuditLogEntity);
+
+    const qb = repository
+      .createQueryBuilder('audit')
+      .orderBy('audit.createdAt', 'DESC')
+      .addOrderBy('audit.id', 'DESC');
+
+    if (query.actorUserId) {
+      qb.andWhere('audit.actorUserId = :actorUserId', {
+        actorUserId: query.actorUserId,
+      });
+    }
+
+    if (query.targetUserId) {
+      qb.andWhere('audit.targetUserId = :targetUserId', {
+        targetUserId: query.targetUserId,
+      });
+    }
+
+    if (dateFrom) {
+      qb.andWhere('audit.createdAt >= :dateFrom', { dateFrom });
+    }
+
+    if (dateTo) {
+      qb.andWhere('audit.createdAt <= :dateTo', { dateTo });
+    }
+
+    const [items, total] = await qb
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
+
+    return {
+      items,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
 }

@@ -17,6 +17,7 @@ import {
   Post,
   Patch,
   Param,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -113,5 +114,35 @@ export class AuthController {
     @Body() dto: UpdateUserRolesDto,
   ) {
     return this.authService.updateUserRoles(actor.id, userId, dto.roles);
+  }
+  /**
+   *
+   * @param page
+   * @param limit
+   * @param actorUserId
+   * @param targetUserId
+   * @param dateFrom
+   * @param dateTo
+   * @returns
+   */
+  @Get('audit-logs')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SuperAdmin)
+  getRoleAuditLogs(
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('actorUserId') actorUserId?: string,
+    @Query('targetUserId') targetUserId?: string,
+    @Query('dateFrom') dateFrom?: string,
+    @Query('dateTo') dateTo?: string,
+  ) {
+    return this.authService.getRoleAuditLogs({
+      page,
+      limit,
+      actorUserId,
+      targetUserId,
+      dateFrom,
+      dateTo,
+    });
   }
 }
