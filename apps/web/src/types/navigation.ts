@@ -1,9 +1,10 @@
-import { SvgIconComponent } from "@mui/icons-material";
+import type { SvgIconComponent } from "@mui/icons-material";
 
 export interface NavigationItem {
   id: string;
   title: string;
- href: string;
+  href: string;
   icon: SvgIconComponent;
   children?: NavigationItem[];
+  requiredRoles?: string[];
 }

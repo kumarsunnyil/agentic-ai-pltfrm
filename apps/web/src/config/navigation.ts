@@ -1,3 +1,13 @@
+/**
+ * ------------------------------------------------------------
+ * @file: src\config\navigation.ts
+ * @description: Reusable Enterprise Dashboard Container.
+ * @author: Sunil.S.Kumar
+ * @date: 13-10-2026
+ * @project: Enterprise Agentic AI Platform
+ * ------------------------------------------------------------
+ */
+
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import SmartToyRoundedIcon from "@mui/icons-material/SmartToyRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
@@ -7,8 +17,10 @@ import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
 import InsightsRoundedIcon from "@mui/icons-material/InsightsRounded";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
+import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 
-import { NavigationItem } from "@/types/navigation";
+import type { NavigationItem } from "@/types/navigation";
 
 export const navigation: NavigationItem[] = [
   {
@@ -58,6 +70,20 @@ export const navigation: NavigationItem[] = [
     title: "Administration",
     href: "/administration",
     icon: AdminPanelSettingsRoundedIcon,
+  },
+  {
+    id: "users",
+    title: "User Management",
+    href: "/dashboard/users",
+    icon: PeopleAltRoundedIcon,
+    requiredRoles: ["ADMIN", "SUPER_ADMIN"],
+  },
+  {
+    id: "audit-logs",
+    title: "Audit History",
+    href: "/dashboard/audit-logs",
+    icon: HistoryRoundedIcon,
+    requiredRoles: ["SUPER_ADMIN"],
   },
   {
     id: "settings",
