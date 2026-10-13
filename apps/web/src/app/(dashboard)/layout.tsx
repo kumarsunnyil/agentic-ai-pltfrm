@@ -1,9 +1,14 @@
+import type { ReactNode } from "react";
+
+import { requireSessionUser } from "@/lib/auth/session";
 import { AppLayout } from "@/ui/layout";
 
-export default function DashboardLayout({
-    children,
+export default async function DashboardLayout({
+  children,
 }: {
-    children: React.ReactNode;
+  children: ReactNode;
 }) {
-    return <AppLayout>{children}</AppLayout>;
+  await requireSessionUser();
+
+  return <AppLayout>{children}</AppLayout>;
 }
