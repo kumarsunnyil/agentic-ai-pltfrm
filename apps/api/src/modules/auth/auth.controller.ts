@@ -99,6 +99,7 @@ export class AuthController {
   listUsers() {
     return this.authService.listUsers();
   }
+
   /**
    *
    * @param actor
@@ -148,6 +149,9 @@ export class AuthController {
     });
   }
 
+  /**
+   *
+   */
   @Post('users')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.Admin, UserRole.SuperAdmin)
@@ -156,6 +160,13 @@ export class AuthController {
     return this.authService.createManagedUser(actor.id, dto);
   }
 
+  /**
+   *
+   * @param actor
+   * @param userId
+   * @param dto
+   * @returns
+   */
   @Patch('users/:id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.SuperAdmin)
