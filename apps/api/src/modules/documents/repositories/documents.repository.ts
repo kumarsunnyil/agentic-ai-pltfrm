@@ -13,7 +13,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { DocumentEntity } from '../entities/document.entity';
-import type { Document } from '../types/document.types';
+import type { Document, DocumentStatus } from '../types/document.types';
+
+interface CreateUploadedDocumentInput {
+  id: string;
+  title: string;
+  type: string;
+  status: DocumentStatus;
+  originalName: string;
+  mimeType: string;
+  sizeBytes: number;
+  storageKey: string;
+  uploadedBy: string;
+}
 
 @Injectable()
 export class DocumentsRepository {
@@ -36,6 +48,13 @@ export class DocumentsRepository {
     return this.repository.count();
   }
 
+  async createUploadedDocument(input: CreateUploadedDocumentInput): Promise<Document> {
+    const entity = this.repository.create(input);
+    const saved = await this.repository.save(entity);
+
+    return this.toDomain(saved);
+  }
+
   private toDomain(document: DocumentEntity): Document {
     return {
       id: document.id,
@@ -43,6 +62,9 @@ export class DocumentsRepository {
       type: document.type,
       time: this.formatRelativeTime(document.createdAt),
       status: document.status,
+      originalName: document.originalName ?? null,
+      mimeType: document.mimeType ?? null,
+      sizeBytes: document.sizeBytes ?? null,
     };
   }
 
