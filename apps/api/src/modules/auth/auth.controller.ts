@@ -116,6 +116,7 @@ export class AuthController {
   ) {
     return this.authService.updateUserRoles(actor.id, userId, dto.roles);
   }
+
   /**
    *
    * @param page

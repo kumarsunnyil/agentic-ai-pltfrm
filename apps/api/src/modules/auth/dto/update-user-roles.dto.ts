@@ -7,7 +7,6 @@
  * @project: Enterprise Agentic AI Platform
  * ------------------------------------------------------------
  */
-
 import { ArrayMinSize, ArrayUnique, IsArray, IsEnum } from 'class-validator';
 
 import { UserRole } from '../types/auth.types';
