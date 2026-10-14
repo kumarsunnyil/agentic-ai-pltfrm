@@ -14,6 +14,7 @@ import {
   DialogTitle,
   FormControlLabel,
   Paper,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -36,25 +37,70 @@ interface User {
   isActive: boolean;
 }
 
+interface NewUser {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
 const ROLE_OPTIONS: UserRole[] = ["SUPER_ADMIN", "ADMIN", "AUTHOR", "READER"];
 
 interface Props {
   currentUserId: string;
   canManageRoles: boolean;
+  canCreateUsers: boolean;
+}
+
+const EMPTY_NEW_USER: NewUser = {
+  email: "",
+  password: "",
+  firstName: "",
+  lastName: "",
+};
+
+function responseMessage(data: unknown, fallback: string): string {
+  if (typeof data === "object" && data !== null && "message" in data) {
+    if (typeof data.message === "string") {
+      return data.message;
+    }
+
+    if (
+      Array.isArray(data.message) &&
+      data.message.every((item) => typeof item === "string")
+    ) {
+      return data.message.join(", ");
+    }
+  }
+
+  return fallback;
 }
 
 export default function UsersManagement({
   currentUserId,
   canManageRoles,
+  canCreateUsers,
 }: Props) {
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
+
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
-  const [reloadKey, setReloadKey] = useState(0);
+  const [savingRoles, setSavingRoles] = useState(false);
+
+  const [createOpen, setCreateOpen] = useState(false);
+  const [newUser, setNewUser] = useState<NewUser>({ ...EMPTY_NEW_USER });
+  const [creatingUser, setCreatingUser] = useState(false);
+  const [createError, setCreateError] = useState("");
+
+  const [statusTarget, setStatusTarget] = useState<User | null>(null);
+  const [savingStatus, setSavingStatus] = useState(false);
+  const [statusError, setStatusError] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -69,15 +115,7 @@ export default function UsersManagement({
         const data: unknown = await response.json().catch(() => null);
 
         if (!response.ok) {
-          const message =
-            typeof data === "object" &&
-            data !== null &&
-            "message" in data &&
-            typeof data.message === "string"
-              ? data.message
-              : "Unable to load users.";
-
-          setError(message);
+          setError(responseMessage(data, "Unable to load users."));
           return;
         }
 
@@ -101,10 +139,9 @@ export default function UsersManagement({
 
     void fetchUsers();
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, [reloadKey]);
+
   const filteredUsers = users.filter((user) => {
     const searchText = search.trim().toLowerCase();
 
@@ -121,7 +158,7 @@ export default function UsersManagement({
   }
 
   function closeRoleDialog() {
-    if (!saving) {
+    if (!savingRoles) {
       setEditingUser(null);
       setSelectedRoles([]);
     }
@@ -133,7 +170,6 @@ export default function UsersManagement({
         return current.includes(role) ? current : [...current, role];
       }
 
-      // The backend requires at least one role.
       if (current.length <= 1) {
         return current;
       }
@@ -147,7 +183,7 @@ export default function UsersManagement({
       return;
     }
 
-    setSaving(true);
+    setSavingRoles(true);
     setError("");
 
     try {
@@ -163,14 +199,7 @@ export default function UsersManagement({
       const data: unknown = await response.json().catch(() => null);
 
       if (!response.ok) {
-        const message =
-          typeof data === "object" && data !== null && "message" in data
-            ? Array.isArray(data.message)
-              ? data.message.join(", ")
-              : String(data.message)
-            : "Unable to update user roles.";
-
-        setError(message);
+        setError(responseMessage(data, "Unable to update user roles."));
         return;
       }
 
@@ -184,28 +213,104 @@ export default function UsersManagement({
 
       setEditingUser(null);
       setSelectedRoles([]);
+      setSuccessMessage("User roles updated successfully.");
     } catch {
       setError("Unable to reach the user service.");
     } finally {
-      setSaving(false);
+      setSavingRoles(false);
+    }
+  }
+
+  async function createUser() {
+    setCreatingUser(true);
+    setCreateError("");
+
+    try {
+      const response = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: newUser.email.trim(),
+          password: newUser.password,
+          firstName: newUser.firstName.trim(),
+          lastName: newUser.lastName.trim(),
+        }),
+      });
+
+      const data: unknown = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setCreateError(responseMessage(data, "Unable to create user."));
+        return;
+      }
+
+      setCreateOpen(false);
+      setNewUser({ ...EMPTY_NEW_USER });
+      setLoading(true);
+      setReloadKey((current) => current + 1);
+      setSuccessMessage("User created successfully with the Reader role.");
+    } catch {
+      setCreateError("Unable to reach the user service.");
+    } finally {
+      setCreatingUser(false);
+    }
+  }
+
+  async function saveUserStatus() {
+    if (!statusTarget) {
+      return;
+    }
+
+    const target = statusTarget;
+    const nextIsActive = !target.isActive;
+
+    setSavingStatus(true);
+    setStatusError("");
+
+    try {
+      const response = await fetch(
+        `/api/admin/users/${encodeURIComponent(target.id)}/status`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isActive: nextIsActive }),
+        },
+      );
+
+      const data: unknown = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setStatusError(
+          responseMessage(data, "Unable to update account status."),
+        );
+        return;
+      }
+
+      setStatusTarget(null);
+      setLoading(true);
+      setReloadKey((current) => current + 1);
+      setSuccessMessage(
+        nextIsActive
+          ? "User activated successfully."
+          : "User deactivated successfully.",
+      );
+    } catch {
+      setStatusError("Unable to reach the user service.");
+    } finally {
+      setSavingStatus(false);
     }
   }
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
       <Stack
-        // direction={{ xs: "column", sm: "row" }}
-        // alignItems={{ sm: "center" }}
-        // justifyContent="space-between"
-        // spacing={2}
         sx={{
-          mb: 3,
-          direction: "row",
-          xs: "column",
-          md: 4,
-          alignItems: "center",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "center" },
           justifyContent: "space-between",
-          gap: 0.75,
+          gap: 2,
+          mb: 3,
         }}
       >
         <Box>
@@ -217,7 +322,28 @@ export default function UsersManagement({
           </Typography>
         </Box>
 
-        <Chip label={`${users.length} users`} variant="outlined" />
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Chip label={`${users.length} users`} variant="outlined" />
+          {canCreateUsers && (
+            <Button
+              variant="contained"
+              onClick={() => {
+                setCreateError("");
+                setNewUser({ ...EMPTY_NEW_USER });
+                setCreateOpen(true);
+              }}
+            >
+              Create User
+            </Button>
+          )}
+        </Stack>
       </Stack>
 
       <TextField
@@ -315,9 +441,33 @@ export default function UsersManagement({
 
                   {canManageRoles && (
                     <TableCell align="right">
-                      <Button size="small" onClick={() => openRoleDialog(user)}>
-                        Edit roles
-                      </Button>
+                      <Stack
+                        sx={{
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
+                          gap: 1,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <Button
+                          size="small"
+                          onClick={() => openRoleDialog(user)}
+                        >
+                          Edit roles
+                        </Button>
+
+                        <Button
+                          size="small"
+                          color={user.isActive ? "error" : "success"}
+                          disabled={user.id === currentUserId && user.isActive}
+                          onClick={() => {
+                            setStatusError("");
+                            setStatusTarget(user);
+                          }}
+                        >
+                          {user.isActive ? "Deactivate" : "Activate"}
+                        </Button>
+                      </Stack>
                     </TableCell>
                   )}
                 </TableRow>
@@ -327,6 +477,106 @@ export default function UsersManagement({
         </Table>
       </TableContainer>
 
+      {/* Create user dialog */}
+      <Dialog
+        open={createOpen}
+        onClose={() => !creatingUser && setCreateOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <Box
+          component="form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void createUser();
+          }}
+        >
+          <DialogTitle>Create User</DialogTitle>
+          <DialogContent>
+            <Stack spacing={2} sx={{ mt: 1 }}>
+              <Typography variant="body2" color="text.secondary">
+                New accounts are created as Readers. You can assign additional
+                roles after creation.
+              </Typography>
+
+              {createError && <Alert severity="error">{createError}</Alert>}
+
+              <TextField
+                label="First name"
+                value={newUser.firstName}
+                onChange={(event) =>
+                  setNewUser((current) => ({
+                    ...current,
+                    firstName: event.target.value,
+                  }))
+                }
+                required
+                fullWidth
+                autoComplete="given-name"
+              />
+
+              <TextField
+                label="Last name"
+                value={newUser.lastName}
+                onChange={(event) =>
+                  setNewUser((current) => ({
+                    ...current,
+                    lastName: event.target.value,
+                  }))
+                }
+                required
+                fullWidth
+                autoComplete="family-name"
+              />
+
+              <TextField
+                label="Email address"
+                type="email"
+                value={newUser.email}
+                onChange={(event) =>
+                  setNewUser((current) => ({
+                    ...current,
+                    email: event.target.value,
+                  }))
+                }
+                required
+                fullWidth
+                autoComplete="email"
+              />
+
+              <TextField
+                label="Temporary password"
+                type="password"
+                value={newUser.password}
+                onChange={(event) =>
+                  setNewUser((current) => ({
+                    ...current,
+                    password: event.target.value,
+                  }))
+                }
+                required
+                fullWidth
+                autoComplete="new-password"
+                helperText="Provide a secure initial password to the user through a separate channel."
+              />
+            </Stack>
+          </DialogContent>
+
+          <DialogActions sx={{ px: 3, pb: 2 }}>
+            <Button
+              onClick={() => setCreateOpen(false)}
+              disabled={creatingUser}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" disabled={creatingUser}>
+              {creatingUser ? "Creating…" : "Create user"}
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
+
+      {/* Role editing dialog */}
       <Dialog
         open={Boolean(editingUser)}
         onClose={closeRoleDialog}
@@ -334,14 +584,12 @@ export default function UsersManagement({
         maxWidth="xs"
       >
         <DialogTitle>Assign roles</DialogTitle>
-
         <DialogContent>
           {editingUser && (
             <Stack spacing={1} sx={{ mt: 1 }}>
               <Typography sx={{ fontWeight: 600 }}>
                 {editingUser.firstName} {editingUser.lastName}
               </Typography>
-
               <Typography variant="body2" color="text.secondary">
                 {editingUser.email}
               </Typography>
@@ -364,7 +612,7 @@ export default function UsersManagement({
                     <Checkbox
                       checked={selectedRoles.includes(role)}
                       disabled={
-                        saving ||
+                        savingRoles ||
                         (selectedRoles.length === 1 &&
                           selectedRoles.includes(role))
                       }
@@ -380,26 +628,79 @@ export default function UsersManagement({
             </Stack>
           )}
         </DialogContent>
-
         <DialogActions>
-          <Button onClick={closeRoleDialog} disabled={saving}>
+          <Button onClick={closeRoleDialog} disabled={savingRoles}>
             Cancel
           </Button>
           <Button
             variant="contained"
             onClick={() => void saveRoles()}
             disabled={
-              saving ||
+              savingRoles ||
               !editingUser ||
               selectedRoles.length === 0 ||
               (editingUser.roles.length === selectedRoles.length &&
                 editingUser.roles.every((role) => selectedRoles.includes(role)))
             }
           >
-            {saving ? "Saving…" : "Save roles"}
+            {savingRoles ? "Saving…" : "Save roles"}
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Status confirmation dialog */}
+      <Dialog
+        open={Boolean(statusTarget)}
+        onClose={() => !savingStatus && setStatusTarget(null)}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle>
+          {statusTarget?.isActive ? "Deactivate user?" : "Activate user?"}
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <Typography>
+              {statusTarget?.isActive
+                ? `Deactivate ${statusTarget.email}? They will not be able to sign in while their account is inactive.`
+                : `Activate ${statusTarget?.email}? They will be able to sign in again.`}
+            </Typography>
+            {statusError && <Alert severity="error">{statusError}</Alert>}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setStatusTarget(null)} disabled={savingStatus}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color={statusTarget?.isActive ? "error" : "success"}
+            onClick={() => void saveUserStatus()}
+            disabled={savingStatus}
+          >
+            {savingStatus
+              ? "Saving…"
+              : statusTarget?.isActive
+                ? "Deactivate"
+                : "Activate"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={4000}
+        onClose={() => setSuccessMessage("")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          severity="success"
+          onClose={() => setSuccessMessage("")}
+          variant="filled"
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

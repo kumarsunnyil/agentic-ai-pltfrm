@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
   Button,
   Chip,
-  CircularProgress, Paper,
+  CircularProgress,
+  Paper,
   Stack,
   Table,
   TableBody,
@@ -16,18 +17,20 @@ import {
   TablePagination,
   TableRow,
   TextField,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 
 interface AuditLog {
   id: string;
-  actorUserId: string;
+  actorName: string | null;
+  actorEmail: string | null;
   targetUserId: string;
   targetEmail: string;
   action: string;
   previousRoles: string[];
   newRoles: string[];
   createdAt: string;
+  metadata?: Record<string, unknown> | null;
 }
 
 interface AuditResponse {
@@ -46,10 +49,10 @@ interface AuditFilters {
 }
 
 const EMPTY_FILTERS: AuditFilters = {
-  actorUserId: '',
-  targetUserId: '',
-  dateFrom: '',
-  dateTo: '',
+  actorUserId: "",
+  targetUserId: "",
+  dateFrom: "",
+  dateTo: "",
 };
 
 function formatDate(value: string) {
@@ -58,11 +61,11 @@ function formatDate(value: string) {
 }
 
 function toIsoStartOfDay(value: string) {
-  return value ? new Date(`${value}T00:00:00`).toISOString() : '';
+  return value ? new Date(`${value}T00:00:00`).toISOString() : "";
 }
 
 function toIsoEndOfDay(value: string) {
-  return value ? new Date(`${value}T23:59:59.999`).toISOString() : '';
+  return value ? new Date(`${value}T23:59:59.999`).toISOString() : "";
 }
 
 export default function AuditLogsManagement() {
@@ -75,7 +78,7 @@ export default function AuditLogsManagement() {
   const [total, setTotal] = useState(0);
   const [reloadKey, setReloadKey] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -88,28 +91,25 @@ export default function AuditLogsManagement() {
         });
 
         if (appliedFilters.actorUserId.trim()) {
-          params.set('actorUserId', appliedFilters.actorUserId.trim());
+          params.set("actorUserId", appliedFilters.actorUserId.trim());
         }
 
         if (appliedFilters.targetUserId.trim()) {
-          params.set('targetUserId', appliedFilters.targetUserId.trim());
+          params.set("targetUserId", appliedFilters.targetUserId.trim());
         }
 
         if (appliedFilters.dateFrom) {
-          params.set(
-            'dateFrom',
-            toIsoStartOfDay(appliedFilters.dateFrom),
-          );
+          params.set("dateFrom", toIsoStartOfDay(appliedFilters.dateFrom));
         }
 
         if (appliedFilters.dateTo) {
-          params.set('dateTo', toIsoEndOfDay(appliedFilters.dateTo));
+          params.set("dateTo", toIsoEndOfDay(appliedFilters.dateTo));
         }
 
         const response = await fetch(
           `/api/admin/audit-logs?${params.toString()}`,
           {
-            cache: 'no-store',
+            cache: "no-store",
             signal: controller.signal,
           },
         );
@@ -118,26 +118,26 @@ export default function AuditLogsManagement() {
 
         if (!response.ok) {
           const message =
-            typeof data === 'object' &&
+            typeof data === "object" &&
             data !== null &&
-            'message' in data &&
-            typeof data.message === 'string'
+            "message" in data &&
+            typeof data.message === "string"
               ? data.message
-              : 'Unable to load audit history.';
+              : "Unable to load audit history.";
 
           setError(message);
           return;
         }
 
         if (
-          typeof data !== 'object' ||
+          typeof data !== "object" ||
           data === null ||
-          !('items' in data) ||
+          !("items" in data) ||
           !Array.isArray(data.items) ||
-          !('total' in data) ||
-          typeof data.total !== 'number'
+          !("total" in data) ||
+          typeof data.total !== "number"
         ) {
-          setError('The API returned an unexpected audit response.');
+          setError("The API returned an unexpected audit response.");
           return;
         }
 
@@ -145,10 +145,10 @@ export default function AuditLogsManagement() {
 
         setItems(result.items);
         setTotal(result.total);
-        setError('');
+        setError("");
       } catch {
         if (!controller.signal.aborted) {
-          setError('Unable to reach the audit service.');
+          setError("Unable to reach the audit service.");
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -168,11 +168,11 @@ export default function AuditLogsManagement() {
       filters.dateTo &&
       filters.dateFrom > filters.dateTo
     ) {
-      setError('The start date must not be later than the end date.');
+      setError("The start date must not be later than the end date.");
       return;
     }
 
-    setError('');
+    setError("");
     setLoading(true);
     setPage(0);
     setAppliedFilters({ ...filters });
@@ -182,7 +182,7 @@ export default function AuditLogsManagement() {
   function resetFilters() {
     setFilters({ ...EMPTY_FILTERS });
     setAppliedFilters({ ...EMPTY_FILTERS });
-    setError('');
+    setError("");
     setLoading(true);
     setPage(0);
     setReloadKey((current) => current + 1);
@@ -207,10 +207,10 @@ export default function AuditLogsManagement() {
 
           <Box
             sx={{
-              display: 'grid',
+              display: "grid",
               gridTemplateColumns: {
-                xs: '1fr',
-                md: 'repeat(2, minmax(0, 1fr))',
+                xs: "1fr",
+                md: "repeat(2, minmax(0, 1fr))",
               },
               gap: 2,
             }}
@@ -274,10 +274,10 @@ export default function AuditLogsManagement() {
 
           <Stack
             sx={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
+              flexDirection: "row",
+              justifyContent: "flex-end",
               gap: 1,
-              flexWrap: 'wrap',
+              flexWrap: "wrap",
             }}
           >
             <Button onClick={resetFilters}>Reset</Button>
@@ -298,7 +298,7 @@ export default function AuditLogsManagement() {
               size="small"
               onClick={() => {
                 setLoading(true);
-                setError('');
+                setError("");
                 setReloadKey((current) => current + 1);
               }}
             >
@@ -315,7 +315,7 @@ export default function AuditLogsManagement() {
           <TableHead>
             <TableRow>
               <TableCell>Timestamp</TableCell>
-              <TableCell>Actor ID</TableCell>
+              <TableCell>Performed by</TableCell>
               <TableCell>Target user</TableCell>
               <TableCell>Action</TableCell>
               <TableCell>Previous roles</TableCell>
@@ -341,24 +341,30 @@ export default function AuditLogsManagement() {
             ) : (
               items.map((item) => (
                 <TableRow key={item.id} hover>
-                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>
                     {formatDate(item.createdAt)}
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="body2" sx={{ overflowWrap: 'anywhere' }}>
-                      {item.actorUserId}
+                    <Typography sx={{
+                      variant: "body2",
+                      fontWeight: 600
+                    }}>
+                      {item.actorName || item.actorEmail || "Unknown actor"}
                     </Typography>
+                    {item.actorEmail && (
+                      <Typography variant="caption" color="text.secondary">
+                        {item.actorEmail}
+                      </Typography>
+                    )}
                   </TableCell>
 
                   <TableCell>
-                    <Typography variant="body2">
-                      {item.targetEmail}
-                    </Typography>
+                    <Typography variant="body2">{item.targetEmail}</Typography>
                     <Typography
                       variant="caption"
                       color="text.secondary"
-                      sx={{ overflowWrap: 'anywhere' }}
+                      sx={{ overflowWrap: "anywhere" }}
                     >
                       {item.targetUserId}
                     </Typography>
@@ -367,7 +373,7 @@ export default function AuditLogsManagement() {
                   <TableCell>{item.action}</TableCell>
 
                   <TableCell>
-                    <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                    <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
                       {item.previousRoles.map((role) => (
                         <Chip key={role} label={role} size="small" />
                       ))}
@@ -375,7 +381,7 @@ export default function AuditLogsManagement() {
                   </TableCell>
 
                   <TableCell>
-                    <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                    <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
                       {item.newRoles.map((role) => (
                         <Chip key={role} label={role} size="small" />
                       ))}

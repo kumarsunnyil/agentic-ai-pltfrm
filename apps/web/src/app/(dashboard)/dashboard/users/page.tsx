@@ -18,6 +18,7 @@ export default async function UsersPage() {
     <UsersManagement
       currentUserId={user.id}
       canManageRoles={user.roles.includes('SUPER_ADMIN')}
+      canCreateUsers={canViewUsers}
     />
   );
 }
