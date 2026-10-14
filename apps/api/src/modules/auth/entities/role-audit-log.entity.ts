@@ -10,6 +10,12 @@ export class RoleAuditLogEntity {
   @Column({ type: 'uuid' })
   actorUserId!: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  actorEmail?: string | null;
+
+  @Column({ type: 'varchar', length: 201, nullable: true })
+  actorName?: string | null;
+
   @Column({ type: 'uuid' })
   targetUserId!: string;
 

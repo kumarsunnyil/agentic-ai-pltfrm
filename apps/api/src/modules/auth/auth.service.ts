@@ -203,10 +203,21 @@ export class AuthService {
       user.roles = uniqueRoles;
 
       const savedUser = await userRepository.save(user);
+      const actor = await userRepository.findOne({
+        where: { id: actorUserId },
+      });
+
+      if (!actor) {
+        throw new UnauthorizedException('Acting user not found');
+      }
+
+      const actorName = `${actor.firstName} ${actor.lastName}`.trim() || actor.email;
 
       await auditRepository.save(
         auditRepository.create({
           actorUserId,
+          actorEmail: actor.email,
+          actorName,
           targetUserId: savedUser.id,
           targetEmail: savedUser.email,
           action: 'USER_ROLES_UPDATED',
@@ -310,6 +321,7 @@ export class AuthService {
       totalPages: Math.ceil(total / limit),
     };
   }
+
   async createManagedUser(actorUserId: string, dto: RegisterDto) {
     const email = dto.email.trim().toLowerCase();
     const passwordHash = await bcrypt.hash(dto.password, 12);
@@ -336,10 +348,21 @@ export class AuthService {
       });
 
       const savedUser = await userRepository.save(user);
+      const actor = await userRepository.findOne({
+        where: { id: actorUserId },
+      });
+
+      if (!actor) {
+        throw new UnauthorizedException('Acting user not found');
+      }
+
+      const actorName = `${actor.firstName} ${actor.lastName}`.trim() || actor.email;
 
       await auditRepository.save(
         auditRepository.create({
           actorUserId,
+          actorEmail: actor.email,
+          actorName,
           targetUserId: savedUser.id,
           targetEmail: savedUser.email,
           action: 'USER_CREATED',
@@ -399,10 +422,21 @@ export class AuthService {
       user.isActive = isActive;
 
       const savedUser = await userRepository.save(user);
+      const actor = await userRepository.findOne({
+        where: { id: actorUserId },
+      });
+
+      if (!actor) {
+        throw new UnauthorizedException('Acting user not found');
+      }
+
+      const actorName = `${actor.firstName} ${actor.lastName}`.trim() || actor.email;
 
       await auditRepository.save(
         auditRepository.create({
           actorUserId,
+          actorEmail: actor.email,
+          actorName,
           targetUserId: savedUser.id,
           targetEmail: savedUser.email,
           action: isActive ? 'USER_ACTIVATED' : 'USER_DEACTIVATED',
