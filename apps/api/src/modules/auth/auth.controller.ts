@@ -31,6 +31,7 @@ import { RolesGuard } from './guards/roles.guard';
 import type { AuthenticatedUser } from './types/auth.types';
 import { UserRole } from './types/auth.types';
 import { UpdateUserRolesDto } from './dto/update-user-roles.dto';
+import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -144,5 +145,24 @@ export class AuthController {
       dateFrom,
       dateTo,
     });
+  }
+
+  @Post('users')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin, UserRole.SuperAdmin)
+  @HttpCode(HttpStatus.CREATED)
+  createManagedUser(@CurrentUser() actor: AuthenticatedUser, @Body() dto: RegisterDto) {
+    return this.authService.createManagedUser(actor.id, dto);
+  }
+
+  @Patch('users/:id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SuperAdmin)
+  updateUserStatus(
+    @CurrentUser() actor: AuthenticatedUser,
+    @Param('id') userId: string,
+    @Body() dto: UpdateUserStatusDto,
+  ) {
+    return this.authService.updateUserStatus(actor.id, userId, dto.isActive);
   }
 }

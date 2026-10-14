@@ -1,4 +1,4 @@
-import { CreateDateColumn, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserRole } from '../types/auth.types';
 
@@ -13,7 +13,11 @@ export class RoleAuditLogEntity {
   @Column({ type: 'uuid' })
   targetUserId!: string;
 
-  @Column({ type: 'varchar', length: 50, default: 'USER_ROLES_UPDATED' })
+  @Column({
+    type: 'varchar',
+    length: 50,
+    default: 'USER_ROLES_UPDATED',
+  })
   action!: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -24,6 +28,9 @@ export class RoleAuditLogEntity {
 
   @Column({ type: 'varchar', array: true })
   newRoles!: UserRole[];
+
+  @Column({ type: 'jsonb', nullable: true })
+  metadata?: Record<string, unknown> | null;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;

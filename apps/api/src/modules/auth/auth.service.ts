@@ -310,4 +310,118 @@ export class AuthService {
       totalPages: Math.ceil(total / limit),
     };
   }
+  async createManagedUser(actorUserId: string, dto: RegisterDto) {
+    const email = dto.email.trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(dto.password, 12);
+
+    return this.dataSource.transaction(async (manager) => {
+      const userRepository = manager.getRepository(UserEntity);
+      const auditRepository = manager.getRepository(RoleAuditLogEntity);
+
+      const existingUser = await userRepository.findOne({
+        where: { email },
+      });
+
+      if (existingUser) {
+        throw new ConflictException('User with this email already exists');
+      }
+
+      const user = userRepository.create({
+        email,
+        passwordHash,
+        firstName: dto.firstName.trim(),
+        lastName: dto.lastName.trim(),
+        roles: [UserRole.Reader],
+        isActive: true,
+      });
+
+      const savedUser = await userRepository.save(user);
+
+      await auditRepository.save(
+        auditRepository.create({
+          actorUserId,
+          targetUserId: savedUser.id,
+          targetEmail: savedUser.email,
+          action: 'USER_CREATED',
+          previousRoles: [],
+          newRoles: [...savedUser.roles],
+          metadata: {
+            isActive: true,
+          },
+        }),
+      );
+
+      return this.toPublicUser(savedUser);
+    });
+  }
+  async updateUserStatus(actorUserId: string, userId: string, isActive: boolean) {
+    return this.dataSource.transaction(async (manager) => {
+      // Use the same lock as role changes so account-status changes
+      // cannot race with Super Admin role changes.
+      await manager.query('SELECT pg_advisory_xact_lock($1)', [1791634440]);
+
+      const userRepository = manager.getRepository(UserEntity);
+      const auditRepository = manager.getRepository(RoleAuditLogEntity);
+
+      const user = await userRepository.findOne({
+        where: { id: userId },
+        lock: { mode: 'pessimistic_write' },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (actorUserId === userId && !isActive) {
+        throw new ForbiddenException('You cannot deactivate your own account');
+      }
+
+      if (user.isActive === isActive) {
+        return this.toPublicUser(user);
+      }
+
+      if (user.isActive && !isActive && user.roles.includes(UserRole.SuperAdmin)) {
+        const activeSuperAdminCount = await userRepository
+          .createQueryBuilder('user')
+          .where('user.isActive = :isActive', { isActive: true })
+          .andWhere(':role = ANY(user.roles)', {
+            role: UserRole.SuperAdmin,
+          })
+          .getCount();
+
+        if (activeSuperAdminCount <= 1) {
+          throw new ForbiddenException('Cannot deactivate the last active Super Admin');
+        }
+      }
+
+      const previousIsActive = user.isActive;
+
+      user.isActive = isActive;
+
+      const savedUser = await userRepository.save(user);
+
+      await auditRepository.save(
+        auditRepository.create({
+          actorUserId,
+          targetUserId: savedUser.id,
+          targetEmail: savedUser.email,
+          action: isActive ? 'USER_ACTIVATED' : 'USER_DEACTIVATED',
+          previousRoles: [...savedUser.roles],
+          newRoles: [...savedUser.roles],
+          metadata: {
+            previousIsActive,
+            newIsActive: savedUser.isActive,
+          },
+        }),
+      );
+
+      return {
+        ...this.toPublicUser(savedUser),
+        statusChange: {
+          previousIsActive,
+          newIsActive: savedUser.isActive,
+        },
+      };
+    });
+  }
 }
