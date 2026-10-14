@@ -22,7 +22,7 @@ export interface DashboardDocument {
   title: string;
   type: string;
   time: string;
-  status: 'Indexed' | 'Processing' | 'Failed';
+  status: 'Uploaded' | 'Processing' | 'Indexed' | 'Failed';
 }
 
 export interface DashboardConversation {

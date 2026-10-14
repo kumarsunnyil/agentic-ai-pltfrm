@@ -14,7 +14,7 @@ import { basename, extname } from 'node:path';
 import { unlink } from 'node:fs/promises';
 
 import { DocumentsRepository } from './repositories/documents.repository';
-import type { Document } from './types/document.types';
+import type { Document, UploadedDocumentFile } from './types/document.types';
 
 @Injectable()
 export class DocumentsService {
@@ -28,7 +28,7 @@ export class DocumentsService {
     return this.documentsRepository.count();
   }
 
-  async uploadDocument(file: Express.Multer.File, uploadedBy: string): Promise<Document> {
+  async uploadDocument(file: UploadedDocumentFile, uploadedBy: string): Promise<Document> {
     if (!file) {
       throw new BadRequestException('A document file is required');
     }

@@ -20,3 +20,10 @@ export interface Document {
   mimeType?: string | null;
   sizeBytes?: number | null;
 }
+export interface UploadedDocumentFile {
+  originalname: string;
+  mimetype: string;
+  size: number;
+  filename: string;
+  path: string;
+}
