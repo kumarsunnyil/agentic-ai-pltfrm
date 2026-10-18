@@ -26,6 +26,7 @@
     "bootstrap:super-admin": "ts-node -r tsconfig-paths/register src/database/scripts/bootstrap-super-admin.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^12.0.1",
     "@nestjs/core": "^11.0.1",
@@ -37,8 +38,10 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "dotenv": "^18.0.5",
+    "mammoth": "^1.13.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "pdf-parse": "^2.4.5",
     "pg": "^8.23.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
