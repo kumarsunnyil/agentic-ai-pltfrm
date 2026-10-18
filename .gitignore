@@ -48,6 +48,7 @@ Thumbs.db
 /apps/api/dist
 
 # Logs
+/apps/api/storage
 /apps/api/logs
 *.log
 /apps/api/npm-debug.log*
