@@ -14,6 +14,7 @@ import { AlertsModule } from './modules/alerts/alerts.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './modules/auth/auth.module';
     AlertsModule,
     ActivitiesModule,
     AuthModule,
+    KnowledgeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
