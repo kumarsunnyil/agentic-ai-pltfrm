@@ -16,6 +16,7 @@ import { DocumentChunkPersistenceService } from './services/document-chunk-persi
 import { EmbeddingService } from './services/embedding.service';
 import { TextChunkingService } from './services/text-chunking.service';
 import { TextExtractionService } from './services/text-extraction.service';
+import { DocumentIngestionService } from './services/document-ingestion.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DocumentChunkEntity])],
@@ -24,12 +25,14 @@ import { TextExtractionService } from './services/text-extraction.service';
     TextChunkingService,
     EmbeddingService,
     DocumentChunkPersistenceService,
+    DocumentIngestionService,
   ],
   exports: [
     TextExtractionService,
     TextChunkingService,
     EmbeddingService,
     DocumentChunkPersistenceService,
+    DocumentIngestionService,
     TypeOrmModule,
   ],
 })

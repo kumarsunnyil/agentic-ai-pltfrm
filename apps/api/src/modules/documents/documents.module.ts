@@ -18,9 +18,10 @@ import { DocumentsSeed } from './documents.seed';
 import { DocumentsRepository } from './repositories/documents.repository';
 import { DocumentsService } from './documents.service';
 import { DocumentEntity } from './entities/document.entity';
+import { KnowledgeModule } from '../knowledge/knowledge.module';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forFeature([DocumentEntity])],
+  imports: [AuthModule, KnowledgeModule, TypeOrmModule.forFeature([DocumentEntity])],
   controllers: [DocumentsController],
   providers: [DocumentsService, DocumentsRepository, DocumentsSeed],
   exports: [DocumentsService],

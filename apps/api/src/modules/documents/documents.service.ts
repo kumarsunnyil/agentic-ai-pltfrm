@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------
- * @file: src\modules\documents\documents.service.ts
+ * @file: src/modules/documents/documents.service.ts
  * @description: Reusable Enterprise Dashboard Container.
  * @author: Sunil.S.Kumar
  * @date: 06-10-2026
@@ -8,17 +8,23 @@
  * ------------------------------------------------------------
  */
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { basename, extname } from 'node:path';
 import { unlink } from 'node:fs/promises';
 
+import { DocumentIngestionService } from '../knowledge/services/document-ingestion.service';
 import { DocumentsRepository } from './repositories/documents.repository';
 import type { Document, UploadedDocumentFile } from './types/document.types';
 
 @Injectable()
 export class DocumentsService {
-  constructor(private readonly documentsRepository: DocumentsRepository) {}
+  private readonly logger = new Logger(DocumentsService.name);
+
+  constructor(
+    private readonly documentsRepository: DocumentsRepository,
+    private readonly documentIngestionService: DocumentIngestionService,
+  ) {}
 
   async getDocuments(): Promise<Document[]> {
     return this.documentsRepository.findAll();
@@ -30,11 +36,16 @@ export class DocumentsService {
 
   async uploadDocument(file: UploadedDocumentFile, uploadedBy: string): Promise<Document> {
     if (!file) {
-      throw new BadRequestException('A document file is required');
+      throw new BadRequestException('A document file is required.');
     }
 
     const originalName = basename(file.originalname)
-      .replace(/[\r\n\0]/g, '')
+      .split('\r')
+      .join('')
+      .split('\n')
+      .join('')
+      .split(String.fromCharCode(0))
+      .join('')
       .slice(0, 255);
 
     const extension = extname(originalName).toLowerCase();
@@ -50,11 +61,12 @@ export class DocumentsService {
     if (!type) {
       await unlink(file.path).catch(() => undefined);
 
-      throw new BadRequestException('Unsupported document type. Allowed types: PDF, DOCX, TXT');
+      throw new BadRequestException('Unsupported document type. Allowed types: PDF, DOCX, TXT.');
     }
 
     try {
-      return await this.documentsRepository.createUploadedDocument({
+      // Save the document metadata first.
+      const savedDocument = await this.documentsRepository.createUploadedDocument({
         id: randomUUID(),
         title: originalName || 'Uploaded document',
         type,
@@ -65,8 +77,22 @@ export class DocumentsService {
         storageKey: file.filename,
         uploadedBy,
       });
-    } catch (error) {
-      // Remove the saved file if metadata cannot be persisted.
+
+      // Start ingestion without making the upload request
+      // wait for text extraction and embedding generation.
+      void this.documentIngestionService
+        .processDocument(savedDocument.id)
+        .catch((error: unknown) => {
+          this.logger.error(
+            `Background ingestion failed for document ${savedDocument.id}.`,
+            error instanceof Error ? error.stack : String(error),
+          );
+        });
+
+      // Return the saved document to the caller.
+      return savedDocument;
+    } catch (error: unknown) {
+      // Remove the uploaded file if metadata persistence fails.
       await unlink(file.path).catch(() => undefined);
       throw error;
     }
