@@ -41,8 +41,13 @@ export class DocumentIngestionService {
       );
 
       // Use only the stored filename, not a caller-provided path.
-      const filePath = resolve(storageDirectory, basename(document.storageKey));
+      const storageKey = document.storageKey;
 
+      if (typeof storageKey !== 'string' || storageKey.trim().length === 0) {
+        throw new Error(`Document ${documentId} does not have a valid storage key.`);
+      }
+
+      const filePath = resolve(storageDirectory, basename(storageKey));
       if (
         !filePath.startsWith(`${storageDirectory}\\`) &&
         !filePath.startsWith(`${storageDirectory}/`)
