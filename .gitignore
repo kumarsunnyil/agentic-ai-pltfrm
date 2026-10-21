@@ -1,4 +1,10 @@
 # See https://github.com for more about ignoring files.
+#Project Root Folder
+## GITHUB ACTIONS
+#Runner on 192.168.1.4 - White-HP
+/actions-runner/
+
+
 # WEB Folders
 # Dependencies
 /apps/web/node_modules
