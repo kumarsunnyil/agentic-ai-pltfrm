@@ -1,0 +1,29 @@
+
+name: Pull Code to Windows Laptop
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pull-code:
+    runs-on: [self-hosted, Windows, X64]
+
+    steps:
+      - name: Pull latest code
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          Set-Location "E:\legaldocumentstore\agentic-ai-platform"
+
+          git fetch origin main
+
+          git pull --ff-only origin main
+
+          Write-Host "Code updated successfully."
