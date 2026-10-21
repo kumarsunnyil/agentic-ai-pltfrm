@@ -1,35 +1,34 @@
-
 name: Pull Code to Windows Laptop
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+   push:
+      branches:
+         - main
+   workflow_dispatch:
 
 permissions:
-  contents: read
+   contents: read
 
 jobs:
-  pull-code:
-    runs-on: [self-hosted, Windows, X64, knowledge-hub-deploy]
+   pull-code:
+      runs-on: [self-hosted, Windows, X64, agentic-knowledge-hub]
 
-    steps:
-      - name: Pull latest code
-        shell: powershell
-        run: |
-          $ErrorActionPreference = "Stop"
+      steps:
+         - name: Pull latest code
+           shell: powershell
+           run: |
+              $ErrorActionPreference = "Stop"
 
-          Set-Location "E:\legaldocumentstore\agentic-ai-platform"
+              Set-Location "E:\legaldocumentstore\agentic-ai-platform"
 
-          git fetch origin main
-          if ($LASTEXITCODE -ne 0) {
-            throw "Git fetch failed"
-          }
+              git fetch origin main
+              if ($LASTEXITCODE -ne 0) {
+                throw "Git fetch failed"
+              }
 
-          git pull --ff-only origin main
-          if ($LASTEXITCODE -ne 0) {
-            throw "Git pull failed"
-          }
+              git pull --ff-only origin main
+              if ($LASTEXITCODE -ne 0) {
+                throw "Git pull failed"
+              }
 
-          Write-Host "Code updated successfully."
+              Write-Host "Code updated successfully."
