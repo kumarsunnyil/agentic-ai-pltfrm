@@ -16,14 +16,20 @@ jobs:
 
     steps:
       - name: Pull latest code
-        shell: pwsh
+        shell: powershell
         run: |
           $ErrorActionPreference = "Stop"
 
           Set-Location "E:\legaldocumentstore\agentic-ai-platform"
 
           git fetch origin main
+          if ($LASTEXITCODE -ne 0) {
+            throw "Git fetch failed"
+          }
 
           git pull --ff-only origin main
+          if ($LASTEXITCODE -ne 0) {
+            throw "Git pull failed"
+          }
 
           Write-Host "Code updated successfully."
