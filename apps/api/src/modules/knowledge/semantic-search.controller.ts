@@ -1,4 +1,4 @@
-// Test Commit for auto pull
+// Test Commit for auto pull bug fixed
 
 import { BadRequestException, Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
